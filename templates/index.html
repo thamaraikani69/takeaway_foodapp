@@ -1,0 +1,326 @@
+{% extends "static_customer.html" %}
+{% block body %}
+{% load mathfilters %}
+
+       <!-- ======================================= Single Item Toggle ================= -->
+        {% for i in cat_data %}
+            {% for j in catitem_data %}
+                {% if j.cat_id == i.id %}
+                <style type="text/css">
+                    .modal-backdrop {
+                        z-index: 0;
+                    }
+                    .modal-content{
+                        top: 70px;
+                    }
+                    .modal-backdrop.fade{
+                        opacity: 0;
+                    }
+                </style>
+                        <!-- ? Special Modal 1-->
+                    <div class="modal fade" id="special_{{j.cat_item_id}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                          
+                        <div style="height: 100vh;" class="modal-dialog modal-xxl">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="staticBackdropLabel">Food</h5>
+                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <!-- <div class="input-group mb-2">
+                                    <span class="input-group-text" id="basic-addon1"><i class="fas fa-search"></i></span>
+                                    <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+                                  </div> -->
+                            </div>
+                            <div class="modal-footer pb-2 mb-3">
+                                <div class="card p-3 col-10 mx-auto">
+                                    <div class="card-img text-center">
+                                        <img src="/return-files/item/{{j.itemimage}}" alt="" height="100px" width="90%">
+                                    </div>
+                                    <div class="img-description mt-2">
+                                        <span class="d-block food-descreption">{{j.itemname|upper}}</span>
+                                        {% if j.discount == 0 or j.discount == "" %}
+                                            <span class="d-block ">&#8377;{{j.rate}}</span>
+                                        {% else %}
+                                            {% with discount=j.discount %}
+                                            <span class="d-block "><strike>&#8377;{{ j.rate }}</strike>   &#8377;{{ j.rate|sub:j.discount }}</span>
+                                            {% endwith %}
+                                        {% endif %}
+                                        <div class="d-flex justify-content-between">
+                                        <div><span class="food-price text-danger d-inline ps-2">
+                                            {% if j.food_cat == 0 %}
+                                                <img src="/static/client_theme/assets/images/veg.png" alt="" width="16px" class="mt-2 mb-3">
+                                            {% else %}
+                                                <img src="/static/client_theme/assets/images/non-veg.png" alt="" width="16px" class="mt-2 mb-3">
+                                            {% endif %}
+                                        </span></div>
+                                        <div><span class="add_cart_cat food-price text-danger float-end" method="add" cart_item="{{j.item_id}}"><i class="fas fa-plus-circle mt-2"></i></span>
+                                              <span class="food-price float-end" style="color:black;">&nbsp;<span id="dishpriceheader_{{j.item_id}}_{{i.id}}">{% for c in cartitem_data %}{% if c.item_id == j.item_id %}{{c.cart_quantity}}{% endif %}{% endfor %}</span>&nbsp;</span>
+                                              <span class="add_cart_cat click_but food-price text-success float-end" style="display:''" id="sub_{{j.item_id}}"  method="sub"  cart_item="{{j.item_id}}"><i class="fas fa-minus-circle mt-2"></i></span></div></div>
+                                    </div>
+                                  <!-- <button class="btn btn-danger">ADD CART</button> -->
+                                </div> 
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    {% endif %}
+                {% endfor %}
+            {% endfor %}
+
+<style>
+      .owl-carousel{
+        width: 980px;
+      }
+      .owl-carousel{
+        width: 980px;
+      }
+      @media  only screen and (max-width: 980px){                      
+        .owl-carousel{
+          width: 850px;
+        }
+      }
+      @media  (min-width: 740px) and (max-width: 800px){                      
+        .owl-carousel{
+          width: 720px;
+        }
+      }
+      @media  only screen and (max-width: 500px){                      
+        .owl-carousel{
+          width: 340px;
+        }
+      }
+    </style>
+    <style type="text/css">
+        
+    </style>
+
+         <div class="app-main__outer">
+         <!-- ! App inner main here -->
+
+         
+         <div class="myAppCenter p-3" >
+
+             <!-- ? ===============> Banner Area <=============== --> 
+            <div class="myBannerWrapper" >
+                <!-- ? Slider main container -->
+                <!-- Set up your HTML -->            
+                    <center><div class="owl-carousel mx-auto" id="owl-carousel">
+                        {% for i in banner_data %}
+                          <img class="circle_banner" src="/return-files/banner/{{i.banner_image}}" class="d-block w-100" alt="..." >
+                        {% endfor %}
+                    </div></center>
+                  
+            </div>   
+
+            <!-- ? ===============> special Area <=============== 
+            <div class="specialWrappe mt-3" data-aos="fade-up">
+                ? ===============> special header <===============
+                <div class="specialHeader">
+                    <h4 class="specialHeader-left d-inline-block">Special</h4>
+                    <a href="/static/client_theme/special.html" class="text-dark"><span class="specialHeader-right float-end">View all</span></a>
+                </div>
+                ? ===============> special Body <===============
+                <div class="specialBody row row-cols-2 my-2 justify-content-around gy-2 gy-md-0">
+                    ? ===============> special Cards <===============
+                    <div class="specialCard  col">
+                        <div class="card p-2" >
+                          <div class="card-img text-center" >
+                              <img src="/static/client_theme/assets/images/special/special1.jpg" alt="" height="100px" width="100%" data-bs-toggle="modal" data-bs-target="#special_1">
+                          </div>
+                          <div class="img-description mt-2">
+                              <span class="d-block food-descreption">Idly</span>
+                              <span class="d-block food-price">&#8377; 30</span>
+                              <span class="food-price text-danger">
+                                  <img src="/static/client_theme/assets/images/veg.png" alt="" width="16px" class="mt-2">
+                              </span>
+                               <span class="food-price text-danger float-end"><i class="fas fa-plus-circle mt-2"></i></span>
+                                              <span class="food-price float-end" style="color:black;">&nbsp;0&nbsp;</span>
+                                              <span class="click_but food-price text-success float-end"><i class="fas fa-minus-circle mt-2"></i></span>
+                          </div>
+                        </div>
+                    </div>
+
+                     ? ===============> special Cards <===============
+                    <div class="specialCard col">
+                        <div class="card p-2">
+                            <div class="card-img text-center">
+                                <img src="/static/client_theme/assets/images/special/special1.jpg" alt="" height="100px" width="100%" data-bs-toggle="modal" data-bs-target="#special_2">
+                            </div>
+                            <div class="img-description mt-2">
+                                <span class="d-block food-descreption">Idly</span>
+                                <span class="d-block food-price">&#8377; 30</span>
+                                <span class="food-price text-danger">
+                                    <img src="/static/client_theme/assets/images/non-veg.png" alt="" width="16px" class="mt-2">
+                                </span>
+                                 <span class="food-price text-danger float-end"><i class="fas fa-plus-circle mt-2"></i></span>
+                                              <span class="food-price float-end" style="color:black;">&nbsp;0&nbsp;</span>
+                                              <span class="click_but food-price text-success float-end"><i class="fas fa-minus-circle mt-2"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>        
+            </div>
+             -->
+       
+
+            <!-- ? ===============> History Area <=============== -->
+            <div class="historyWrapper mt-3"  data-aos="fade-up">
+                {% for i in cat_data %}
+                    <!-- ? ===============> History header <=============== -->
+                      <!-- ? ===============> special header <=============== -->
+                    <div class="specialHeader">
+                        <h4 class="specialHeader-left d-inline-block">{{i.name|upper}}</h4>
+                        <a href="/view_all/{{i.id}}" class="text-dark"><span class="specialHeader-right float-end">View all</span></a>
+                    </div>
+                    <!-- ? ===============> History Body <=============== -->
+                        <style type="text/css">
+                            .card-img img {
+                                  border-radius: 10%;
+                                }
+                            .card {
+                                border-radius: 10%;
+                            }
+                            .circle_cat {
+                                    border-radius: 100%;
+
+                                  height: 350px;
+                                  width: 100% !important;
+                                }
+                            .circle_banner {
+                                  border-radius: 5%;
+                                  height: 350px;
+                                  width: 700px !important;
+                                }
+
+                            @media only screen and (max-width: 600px) {
+                                  .circle_banner{
+                                    border-radius: 5%;
+                                    height: 250px;
+                                    width: 100% !important;
+
+                                  }
+                                }
+                            @media only screen and (max-width: 600px) {
+                                  .circle_cat{
+                                    border-radius: 100%;
+                                    height: 80px;
+                                    width: 100% !important;
+
+                                  }
+                                }
+                        </style>
+                        <!-- ? Slider main container -->
+                        <!-- {{catitem_data}} -->
+                        <!-- {{cartitem_data}} -->
+                        <div class="owl-carousel owl_2 mx-auto" >
+                            {% for j in catitem_data %}
+                                {% if j.cat_id == i.id %}
+                                      <div class="circle_item card p-2" >
+                                        <div class="card-img text-center" >
+                                            <img class="circle_item" src="/return-files/item/{{j.itemimage}}" alt="" height="100px" width="100%" data-bs-toggle="modal" data-bs-target="#special_{{j.cat_item_id}}">
+                                        </div>
+                                        <div class="img-description mt-2">
+                                            <span class="d-block food-descreption">{{j.itemname|upper}}</span>
+                                            {% if j.discount == 0 or j.discount == "" %}
+                                                <span class="d-block ">&#8377;{{j.rate}}</span>
+                                            {% else %}
+                                                {% with discount=j.discount %}
+                                                <span class="d-block "><strike>&#8377;{{ j.rate }}</strike>   &#8377;{{ j.rate|sub:j.discount }}</span>
+                                                {% endwith %}
+                                            {% endif %}
+
+                                            <span class="food-price text-danger d-inline ps-2">
+                                                {% if j.food_cat == 0 %}
+                                                    <img src="/static/client_theme/assets/images/veg.png" alt="" width="16px" class="mt-2  d-inline">
+                                                {% else %}
+                                                    <img src="/static/client_theme/assets/images/non-veg.png" alt="" width="16px" class="mt-2 d-inline">
+                                                {% endif %}
+                                            </span>
+
+                                             <span class="add_cart_cat food-price text-danger float-end animatebutton" method="add" cart_item="{{j.item_id}}"><i class="fas fa-plus-circle mt-2"></i></span>
+                                              <span class="food-price float-end" style="color:black;">&nbsp;<span id="dishprice_{{j.item_id}}_{{i.id}}">{% for c in cartitem_data %}{% if c.item_id == j.item_id %}{{c.cart_quantity}}{% endif %}{% endfor %}</span>&nbsp;</span>
+                                              <span class="add_cart_cat click_but food-price text-success float-end animatebutton" style="display:''" id="sub_{{j.item_id}}"  method="sub"  cart_item="{{j.item_id}}"><i class="fas fa-minus-circle mt-2"></i></span>
+                                        </div>
+                                      </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+               {% endfor %} 
+            </div>
+
+            <!-- ? ===============> All Categories <=============== -->
+            <div class="allCategoriesWrapper mt-3" data-aos="fade-up">
+                <!-- ? ===============> All Categories header <=============== -->
+                     <div class="specialHeader">
+                        <h4 class="specialHeader-left d-inline-block">All Categories</h4>
+                        <a href="/item_catagory/0" class="text-dark"><span class="specialHeader-right float-end">View all</span></a>
+                    </div>
+                <!-- ? ===============> All Categories Body <=============== -->
+                <div class="allCategoriesBody">   
+                                     
+                    <!-- ? ===============> Categorie Row<=============== -->
+                    <div class="row row-cols-4 my-2">
+                        <!-- ? ===============> Categorie <=============== -->
+                            {% for i in foodcat_data %}
+                                <div class="col categorie">
+                                    <center>
+                                    <a href="/item_catagory/{{i.id}}">
+                                        <div class="">
+                                            <img class="circle_cat" src="/return-files/dish_cat/{{i.dish_image}}">                                
+                                        </div>
+                                    </a>
+                                        <div class="categorieDescription text-center">
+                                            <Strong>{{i.name}}</Strong>
+                                        </div>
+                                    </center>
+                                </div>
+                            {% endfor %}
+                    </div>
+
+                </div>
+
+            </div>
+            
+
+    <script>
+        $(document).ready(function(){
+            $("#owl-carousel").owlCarousel({
+                loop:true,
+                margin:10,
+                nav:false,
+                autoplay:true,
+                responsive:{
+                    0:{
+                        items:1
+                    },
+                    600:{
+                        items:1
+                    },
+                    1000:{
+                        items:1
+                    }
+                }
+            });
+            
+            $(".owl_2").owlCarousel({
+                // loop:true,
+                margin:10,
+                nav:false,
+                autoplay:true,
+                responsive:{
+                    0:{
+                        items:2
+                    },
+                    600:{
+                        items:2
+                    },
+                    1000:{
+                        items:3
+                    }
+                }
+            });
+        });
+    </script>
+
+{% endblock %}

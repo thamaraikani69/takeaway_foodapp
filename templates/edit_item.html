@@ -1,0 +1,167 @@
+{% extends "static.html" %}
+{% block body %}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card overflow-hidden">
+
+        <!-- Content -->
+        
+            <form action="" method="POST" enctype="multipart/form-data">
+                {% for j in item_data %}
+                        {% csrf_token %}
+                <div class="container" style="margin-top: 150px">
+                    <h3>Add a Item</h3>
+                    <div class="row">
+                        <div class="col-sm-9 col-lg-9">
+                            <div class="form-group">
+                                <label>Enter code: </label>
+                                <input type="text" value="{{j.code}}" name="code" placeholder="Enter code" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-9 col-lg-39">
+                            <div class="form-group">
+                                <label> Dish Catagory </label>
+                                <select class="form-control" name="dish_cat">
+                                    {% for i in foodcat_data %}
+                                        {% if i.id == j.dish_cat %}
+                                            <option selected="" value="{{i.id}}">{{i.name}}</option>
+                                        {% else %}
+                                            <option value="{{i.id}}">{{i.name}}</option>
+                                        {% endif %}
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-9 col-lg-9">
+                            <div class="form-group">
+                                <label>Enter Item name: </label>
+                                <input type="text" value="{{j.itemname}}" name="itemname" placeholder="Enter item name" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+                     <div class="row">
+                        <div class="col-sm-9 col-lg-9">
+                            <div class="form-group">
+                                <label>Enter Rate: </label>
+                                <input type="number" value="{{j.rate}}" name="rate" placeholder="Enter Rate" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+                     <div class="row">
+                        <div class="col-sm-9 col-lg-9">
+                            <div class="form-group">
+                                <label>Enter Discount Amount    :</label>
+                                <input type="number" value="{{j.discount}}" name="discount" placeholder="Enter Discount"  class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+                    
+
+                    <div class="row">
+                        <div class="col-sm-9 col-lg-39">
+                            <div class="form-group">
+                                <label> Food Catagory </label>
+                                <select class="form-control" name="food_cat">
+                                    {% if j.food_cat == 1 %}
+                                        <option selected="" value=1>Non-veg</option>
+                                        <option value=0>Veg</option>  
+                                    {% else %}
+                                        <option value=1>Non-veg</option>
+                                        <option selected="" value=0>Veg</option>  
+                                    {% endif %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-9 col-lg-39">
+                            <div class="form-group">
+                                <label> Stock Maintain </label>
+                                <select class="form-control" name="stock">
+                                    {% if j.stock_alert == 1 %}
+                                        <option selected="" value=1>Yes</option>
+                                        <option value=0>No</option>  
+                                    {% else %}
+                                        <option value=1>Yes</option>
+                                        <option selected="" value=0>No</option>  
+                                    {% endif %} 
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-9 col-lg-9">
+                            <div class="form-group">
+                                <label>Enter Quantity: </label>
+                                <input type="number" value="{{j.quantity}}" name="quantity" placeholder="Enter quantity" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-9 col-lg-9">
+                            <div class="form-group">
+                                <label>Stock Alert Quantity: </label>
+                                <input type="number" value="{{j.stock_Alert}}" name="stockalert" placeholder="Enter stock alert" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-9 col-lg-39">
+                            <div class="form-group">
+                                <label> Sales Status </label>
+                                <select class="form-control" name="sales_status">
+                                    {% if j.status == 'active' %}
+                                        <option selected="" value="1">Active</option>
+                                        <option value="0">Inactive</option>  
+                                    {% else %}
+                                        <option value="1">Active</option>
+                                        <option  selected=""value="0">Inactive</option>  
+                                    {% endif %} 
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                     <div class="row">
+                        <div class="col-sm-9 col-lg-9" style="text-align: center">
+                            <input type="file" name="filename">
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top: 10px">
+                        <div class="col-sm-9 col-lg-39" style="text-align: center">
+                            <button class="btn btn-primary btn-round " type="submit">Save</button>
+                        </div>
+                    </div>
+
+                </div>
+                {% endfor %}
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<!-- <script src="https://cdn.jsdelivr.net/npm/jquery@2.2.4/dist/jquery.min.js"></script> -->
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.4/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery-match-height@0.7.2/dist/jquery.matchHeight.min.js"></script>
+<!-- <script src="/static/assets/js/main.js"></script> -->
+<!--  Chart js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.7.3/dist/Chart.bundle.min.js"></script>
+<!--Chartist Chart-->
+<script src="https://cdn.jsdelivr.net/npm/chartist@0.11.0/dist/chartist.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartist-plugin-legend@0.6.2/chartist-plugin-legend.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery.flot@0.8.3/jquery.flot.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/flot-pie@1.0.0/src/jquery.flot.pie.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/flot-spline@0.0.1/js/jquery.flot.spline.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/simpleweather@3.1.0/jquery.simpleWeather.min.js"></script>
+<script src="/static/assets/js/init/weather-init.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@3.9.0/dist/fullcalendar.min.js"></script>
+<script src="/static/assets/js/init/fullcalendar-init.js"></script>
+
+{% endblock %}

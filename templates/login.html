@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Login </title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- ---------------------------------------------------------------------- Toaster css ------------------------------------ -->
+      <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+        
+    <!--===============================================================================================-->
+    <link rel="icon" type="image/png" href="/static/Login/images/icons/favicon.ico" />
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="/static/Login/vendor/bootstrap/css/bootstrap.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="/static/Login/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="/static/Login/fonts/Linearicons-Free-v1.0.0/icon-font.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="/static/Login/vendor/animate/animate.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="/static/Login/vendor/css-hamburgers/hamburgers.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="/static/Login/vendor/animsition/css/animsition.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="/static/Login/vendor/select2/select2.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="/static/Login/vendor/daterangepicker/daterangepicker.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="/static/Login/css/util.css">
+    <link rel="stylesheet" type="text/css" href="/static/Login/css/main.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!--===============================================================================================-->
+</head>
+
+<body>
+    <!-- ============================================================================================ -->
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $("#success-alert").hide();
+            $("#myWish").show(function showAlert() {
+                $("#success-alert").fadeTo(2000, 500).slideUp(500, function() {
+                    $("#success-alert").slideUp(500);
+                });
+            });
+        });
+    </script>   
+    {% include 'include/messages.html' %}
+
+    <!-- ============================================================================================= -->
+    <div class="limiter">
+        <div class="container-login100" style="background-image: url('https://i.ibb.co/hgqbBhQ/gradienta-Le-G68-Pr-XA6-Y-unsplash.jpg');">
+
+            <div class="wrap-login100 p-l-110 p-r-110 p-t-62 p-b-33">
+                <form class="login100-form validate-form flex-sb flex-w" method="POST" action="">
+                    {% csrf_token %}
+                    <span class="login100-form-title p-b-53">
+                        Sign In With
+                    </span>
+                    <div class="p-t-31 p-b-9">
+                        <span class="txt1">
+                            Mobile Number:
+                        </span>
+                    </div>
+                    <div class="wrap-input100 validate-input" data-validate="Mobile Number is required">
+                        <input class="input100" type="number" name="username" id="mobile_no">
+                        <span class="focus-input100"></span>
+                        {% if access == 'user' %}
+                        <span class="txt1">
+                            <button type="button" class="login100-form-btn" id="otp" style="background-color: deepskyblue;display: block;" onclick="timer(120);" >Click To Send OTP</button>
+                        </span>
+                       <center><div id="timer_" style="display:none; background-color: lightgray;color: black;font: bold;">Time left = <span id="timer"></span></div></center>
+                        {% endif %}
+                    </div>
+                    <div class="p-t-13 p-b-9">
+                        <span class="txt1">
+                            OTP:
+                        </span>
+                    </div>
+                    <div class="wrap-input100 validate-input" data-validate="OTP is required">
+                        <input class="input100" type="number" name="pass">
+                        <span class="focus-input100"></span>
+                    </div>
+                    <div class="container-login100-form-btn m-t-17">
+                        <button class="login100-form-btn">
+                            Sign In
+                        </button>
+                    </div>
+                    <div class="container-login100-form-btn m-t-17" style="justify-content: flex-end;">
+                        <!-- <a href="/signup">Click to signup here!!</a> -->
+                    </div>
+            </div>
+            </form>
+        </div>
+    </div>
+    </div>
+    <style>
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+</style>
+
+<script type="text/javascript">
+    let timerOn = true;
+
+    function timer(remaining) {
+      var m = Math.floor(remaining / 60);
+      var s = remaining % 60;
+      
+      m = m < 10 ? '0' + m : m;
+      s = s < 10 ? '0' + s : s;
+      document.getElementById('timer').innerHTML = m + ':' + s;
+      remaining -= 1;
+      
+      if(remaining >= 0 && timerOn) {
+        setTimeout(function() {
+            timer(remaining);
+        }, 1000);
+        return;
+      }
+
+      if(!timerOn) {
+        // Do validate stuff here
+        return;
+      }
+      
+      // Do timeout stuff here
+            document.getElementById('otp').style.display = 'block';
+            document.getElementById('timer_').style.display = 'none';
+    }
+
+    // timer(10);
+</script>
+<script type="text/javascript">
+
+// <!-- OTP -->
+          $(document).on('click','#otp',function() {
+            document.getElementById('otp').style.display = 'none';
+            document.getElementById('timer_').style.display = 'block';
+              var mobile_no = document.getElementById('mobile_no').value
+              $.ajax({
+                      type: "POST",
+                      url: '/otp_login/',
+                      data:{'mobile_no': mobile_no,
+                              'csrfmiddlewaretoken': '{{ csrf_token }}'
+                                }
+                     })
+                  .done(function(data) {
+
+                      if (data['data']['message'] == true) 
+                      {
+                             M.toast({html: "OTP Send To Your mobile number", classes: 'green rounded', displayLength:2000});
+                            
+
+                      }
+                      else
+                      {
+                             M.toast({html: data['data']['message'], classes: 'red rounded', displayLength:2000});
+                             document.getElementById('otp').style.display = 'block';
+                            document.getElementById('timer_').style.display = 'none';
+
+                      }
+                  })
+              })
+    </script>
+
+    <style type="text/css">
+@media only screen and (max-width: 600px)
+  {
+    #toast-container {
+            top: 0px;
+            left: 180px;
+            opacity: 1;
+        }
+
+        #toast-container > div{
+            width: 12em;
+        }
+      }
+
+     /*   #toast-container {
+            top: 0px;
+            left: 800px;
+            opacity: 1;
+        }
+
+
+       #toast-container > div{
+            width: 12em;
+        }*/
+        
+    </style>
+
+
+    <div id="dropDownSelect1"></div>
+    <!--===============================================================================================-->
+    <script src="/static/Login/vendor/jquery/jquery-3.2.1.min.js"></script>
+    <!--===============================================================================================-->
+    <script src="/static/Login/vendor/animsition/js/animsition.min.js"></script>
+    <!--===============================================================================================-->
+    <script src="/static/Login/vendor/bootstrap/js/popper.js"></script>
+    <script src="/static/Login/vendor/bootstrap/js/bootstrap.min.js"></script>
+    <!--===============================================================================================-->
+    <script src="/static/Login/vendor/select2/select2.min.js"></script>
+    <!--===============================================================================================-->
+    <script src="/static/Login/vendor/daterangepicker/moment.min.js"></script>
+    <script src="/static/Login/vendor/daterangepicker/daterangepicker.js"></script>
+    <!--===============================================================================================-->
+    <script src="/static/Login/vendor/countdowntime/countdowntime.js"></script>
+    <!--===============================================================================================-->
+    <script src="/static/Login/js/main.js"></script>
+</body>
+
+</html>

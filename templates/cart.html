@@ -1,0 +1,356 @@
+{% extends "static_customer.html" %}
+{% block body %}
+{% load mathfilters %}
+
+{% if cart_data != None %}
+
+
+
+<style type="text/css">
+    input[type="radio"] { 
+  position: absolute;
+  opacity: 0;
+}
+
+/* Normal Track */
+input[type="radio"].ios-switch + div {
+  vertical-align: middle;
+  width: 40px;  height: 20px;
+  border: 1px solid rgba(0,0,0,.4);
+  border-radius: 999px;
+  background-color: rgba(0, 0, 0, 0.1);
+  -webkit-transition-duration: .4s;
+  -webkit-transition-property: background-color, box-shadow;
+  box-shadow: inset 0 0 0 0px rgba(0,0,0,0.4);
+  margin: 15px 1.2em 15px 2.5em;
+}
+
+/* Checked Track (Blue) */
+input[type="radio"].ios-switch:checked + div {
+  width: 40px;
+  background-position: 0 0;
+  background-color: #3b89ec;
+  border: 1px solid #0e62cd;
+  box-shadow: inset 0 0 0 10px rgba(59,137,259,1);
+}
+
+/* Tiny Track */
+input[type="radio"].tinyswitch.ios-switch + div {
+  width: 34px;  height: 18px;
+}
+
+/* Big Track */
+input[type="radio"].bigswitch.ios-switch + div {
+  width: 50px;  height: 25px;
+}
+
+/* Green Track */
+input[type="radio"].green.ios-switch:checked + div {
+  background-color: #00e359;
+  border: 1px solid rgba(0, 162, 63,1);
+  box-shadow: inset 0 0 0 10px rgba(0,227,89,1);
+}
+
+/* Normal Knob */
+input[type="radio"].ios-switch + div > div {
+  float: left;
+  width: 18px; height: 18px;
+  border-radius: inherit;
+  background: #ffffff;
+  -webkit-transition-timing-function: cubic-bezier(.54,1.85,.5,1);
+  -webkit-transition-duration: 0.4s;
+  -webkit-transition-property: transform, background-color, box-shadow;
+  -moz-transition-timing-function: cubic-bezier(.54,1.85,.5,1);
+  -moz-transition-duration: 0.4s;
+  -moz-transition-property: transform, background-color;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3), 0px 0px 0 1px rgba(0, 0, 0, 0.4);
+  pointer-events: none;
+  margin-top: 1px;
+  margin-left: 1px;
+}
+
+/* Checked Knob (Blue Style) */
+input[type="radio"].ios-switch:checked + div > div {
+  -webkit-transform: translate3d(20px, 0, 0);
+  -moz-transform: translate3d(20px, 0, 0);
+  background-color: #ffffff;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3), 0px 0px 0 1px rgba(8, 80, 172,1);
+}
+
+/* Tiny Knob */
+input[type="radio"].tinyswitch.ios-switch + div > div {
+  width: 16px; height: 16px;
+  margin-top: 1px;
+}
+
+/* Checked Tiny Knob (Blue Style) */
+input[type="radio"].tinyswitch.ios-switch:checked + div > div {
+  -webkit-transform: translate3d(16px, 0, 0);
+  -moz-transform: translate3d(16px, 0, 0);
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3), 0px 0px 0 1px rgba(8, 80, 172,1);
+}
+
+/* Big Knob */
+input[type="radio"].bigswitch.ios-switch + div > div {
+  width: 23px; height: 23px;
+  margin-top: 1px;
+}
+
+/* Checked Big Knob (Blue Style) */
+input[type="radio"].bigswitch.ios-switch:checked + div > div {
+  -webkit-transform: translate3d(25px, 0, 0);
+  -moz-transform: translate3d(16px, 0, 0);
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3), 0px 0px 0 1px rgba(8, 80, 172,1);
+}
+
+/* Green Knob */
+input[type="radio"].green.ios-switch:checked + div > div {
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(0, 162, 63,1);
+}
+
+</style>
+
+    <div class="app-main__outer">
+         <!-- ! App inner main here -->
+        <div class="myAppCenter p-3" >
+            
+            <div class="orderDetailsWrapper">
+                <div class="row  justify-content-center  ">
+                    <div class="col-10 col-md-10 mx-auto d-flex justify-content-center flex-column">
+                        
+                        <div class="row card p-1 brdr-radius-5 mb-3" data-aos="fade-up">
+                        
+                            <div class="detailsHead">
+                                <div >
+                                    <!-- <span class="text-secondary" >14-09-21 2.04Pm </span> -->
+                                    <span class="pull-right text-danger"><i class="far fa-clipboard"></i> Cart </span>
+                                </div>             
+                            </div>
+                            
+                            <!-- /<p class=" text-secondary text-center" style="font-size:12px">Note: show or tell this PIN to staff for takeaway</p> -->
+                            {% for i in cartitem_data %}
+                            
+                            <div class="my-2 item">
+                                <div class="category row">
+                                    <div class="categoryImage col-5">
+                                        <img src="/return-files/item/{{i.item_image}}" alt="" width="100%">                                
+                                    </div>
+                                    <div class=" text-center col-4 d-flex flex-column align-items-center justify-content-center">
+                                        <span><Strong>{{i.item_name}}</Strong></span>
+                                        <span><Strong>&#8377; {{i.price}}</Strong></span> 
+                                    </div>
+                                    <div class="col-3 d-flex align-items-center justify-content-center fw-bolder">
+                                        
+                                              <span class="add_cart click_but food-price text-success float-end" style="display:''" id="sub_{{i.item_id}}"  method="sub"  cart_item="{{i.item_id}}"><i class="fas fa-minus-circle mt-2"></i></span> 
+                                              <span class="food-price float-end" style="color:black;">&nbsp;<span id="dishprice_{{i.item_id}}">{{i.cart_quantity}}</span>&nbsp;</span>
+                                              <span class="add_cart food-price text-danger float-end" method="add" cart_item="{{i.item_id}}"><i class="fas fa-plus-circle mt-2"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                            
+                            <div class="detailDivider"></div>
+                            {% for j in cart_data %}                           
+                            <div class="container-fluid">
+                              <div class="row">
+                                <div class="col-12">
+                                  <div class="row">
+                                    <div class="col-6 text-center fw-bold text-danger">
+                                        Total Amount
+                                    </div>
+                                    <div class="col-6 text-center fw-bold text-danger">
+                                        <span style="text-align:right!important;" id="total_html">{{j.total|floatformat:2}}</span>
+                                    </div>
+                                  </div>
+                                  {% if j.gst != 0 %}
+                                  <div class="row">
+                                    <div class="col-6 text-center">
+                                       Tax {{j.gst}}
+                                    </div>
+                                    <div class="col-6 text-center">
+                                        <span style="text-align:right!important;" id="gst_html">{{j.total|mul:j.gst|div:100|floatformat:2}}</span>
+                                    </div>
+                                  </div>
+                                  {% endif %}
+                                  <div class="row">
+                                    <div class="col-6 text-center">
+                                       Service Charge
+                                    </div>
+                                    <div class="col-6 text-center">
+                                            <span style="text-align:right!important;" id="service_charge">{{j.service_charge|floatformat:2}}</span>
+                                    </div>
+                                  </div>
+                                  <div class="row">
+                                    <div class="col-6 text-center">
+                                       Door Delivery Charge
+                                    </div>
+                                    <div class="col-6 text-center">
+                                            <span style="text-align:right!important;" id="delivery_charge">{% if j.delivery_charge == 0 %}-{% else %}{{j.delivery_charge|floatformat:2}}{% endif %}</span>
+                                    </div>
+                                  </div>
+                                  <div class="row">
+                                    <div class="col-6 text-center  text-success fw-bold">
+                                        Grand Total
+                                    </div>
+                                    <div class="col-6 text-center text-success fw-bold">
+                                            <span style="text-align:right!important; display: none;" id='grand_total_html' >{{j.grand_total|floatformat:2}}</span>
+                                            <span style="text-align:right!important;" id='grand_total' >{{j.grand_total|floatformat:2}}</span>
+                                    </div>
+
+                                    <div class="detailDivider"></div>
+
+                                  </div>                    
+                                  <form action="{{re_url}}" method="POST">
+                                        {% csrf_token %}
+                                          <center>
+                                                <div class="col-6 text-center ">
+                                                    <label class="mt-5s">Arrival Time:</label>
+                                                    <input type="time" name="arrival_time" value="{{delivery_time_}}" class="text-center" ><br>
+                                                </div>Our Delivery Time or Your Arrival Time
+                                            </center>   
+                                                    
+                                      <div class="row mt-5 text-center  mx-auto" style="border: 1px solid black; width: fit-content; margin: 0px 0px 0px 0px;box-shadow: 10px 10px 5px 0px rgba(122,113,234,0.75);
+                                -webkit-box-shadow: 10px 10px 5px 0px rgba(122,113,234,0.75);
+                                -moz-box-shadow: 10px 10px 5px 0px rgba(122,113,234,0.75); ">
+                                    {% if delivery_type|lower == 'on' %}
+
+                                        <div class=" text-center  col-md-12 col-sm-12 col-lg-6">
+                                          <div class="form-check ">
+                                            <label><input type="radio" class="ios-switch" id="delivery_type"  name="delivery_type" value="door_delivery"  onclick="delivery_type_js(this)" /><div><div></div></div>Door Delivery</label>
+                                          </div>
+                                        </div>
+                                    {% endif %}
+                                        <div class="text-center  col-md-12 col-sm-12 col-lg-6" id="apphide" style="display:none">
+                                          <div class="form-check ">
+                                            <label>Door Delivery:<input type="text" class="ios-switch"  name="delivery_name" placeholder="Name:" /><input type="text" class="ios-switch"  name="delivery_address" placeholder="Address" /><div><div></div></div></label>
+                                          </div>
+                                        </div>
+                                        {% if takeaway_type|lower == 'on' %}
+                                        <div class=" text-center col-md-12 col-sm-12 col-lg-6">
+                                          <div class="form-check ">
+                                            <label><input type="radio" class="ios-switch" id="delivery_type" name="delivery_type" checked="" value="take_away"  onclick="delivery_type_js(this)" /><div><div></div></div>Take Away</label>
+                                          </div>
+                                        </div>
+                                        {% endif %}
+                                      </div>    
+                                      <div class="row mt-5 text-center  mx-auto" style="border: 1px solid black; width: fit-content; margin: 0px 0px 0px 0px;box-shadow: 10px 10px 5px 0px rgba(122,113,234,0.75);
+                                -webkit-box-shadow: 10px 10px 5px 0px rgba(122,113,234,0.75);
+                                -moz-box-shadow: 10px 10px 5px 0px rgba(122,113,234,0.75); ">
+                                    <div class="row p-4 my-4  mx-auto">
+                                        <div class="col-6 text-start">
+                                                <button  style="height:50px" class="btn btn-danger rs-btn p-2 "> Place Order </button>
+                                            </div>
+                                        <!-- {% if cash_pay|lower == 'on' %}
+                                            
+                                            <div class="col-6 text-start">
+                                                <button   class="btn btn-danger rs-btn p-2 " name="cash_btn"> pay cash</button>
+                                            </div>
+                                        {% endif %}
+                                        {% if online_pay|lower == 'on' %}
+                                             <div class="col-6 text-end">
+                                                 <button   class="btn btn-success rs-btn p-1 " name="online_btn">pay online</button>
+                                            </div>
+                                        {% endif %} -->
+                                        </div>                                        
+                                    </div><br>
+
+                                    
+                                       <!--  <div class="row p-4 my-4 col-md-10 mx-auto">
+                                            <div class="col-12">
+                                                <center><button   class="btn btn-danger rs-btn p-2 "> Order Now</button></center>
+                                            </div>
+                                        </div><br> -->
+
+                                </form>
+                                </div>
+                              </div>
+                            </div>
+
+                            <script type="text/javascript">
+                                function delivery_type_js(val){
+                                    var delivery_type_=val.value
+                                    
+                                    let door_delivery_charges={{door_delivery_charge}}
+                                    
+                                    if (delivery_type_=='door_delivery' )
+                                    {   
+
+                                        document.getElementById('apphide').style.display = 'block';
+
+                                        let old_grand_total=parseFloat(document.getElementById('grand_total').innerHTML)
+                                        let grand_total=parseFloat(document.getElementById('grand_total_html').innerHTML)
+                                        if (grand_total>=300)
+                                        {
+                                            door_delivery_charges=0
+                                        }
+                                        if (old_grand_total==grand_total)
+                                        {   
+                                            total=grand_total+door_delivery_charges
+                                            document.getElementById('grand_total').innerHTML=total.toFixed(2)
+                                            document.getElementById('delivery_charge').innerHTML=door_delivery_charges
+                                        }
+                                    }
+                                    else if(delivery_type_=='take_away')
+                                    {   
+                                            document.getElementById('apphide').style.display = 'none';;
+
+                                        let grand_total=parseFloat(document.getElementById('grand_total_html').innerHTML)
+                                         document.getElementById('grand_total').innerHTML=grand_total.toFixed(2)
+                                        document.getElementById('delivery_charge').innerHTML='-'
+                                    }
+                                    else
+                                    {
+                                        alert("Invalid Option ")
+                                    }
+                                }
+
+                            </script>
+                            {% endfor %}
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <style type="text/css">
+    .rs-btn{
+        width: 300px;
+    }
+@media only screen and (max-width: 600px) {
+  .rs-btn{
+    width:100px;
+
+  }
+}
+</style>
+{% else %}
+
+<div class="app-main__outer">
+         <!-- ! App inner main here -->
+        <div class="myAppCenter p-3" >
+            
+            <div class="orderDetailsWrapper">
+                <div class="row  justify-content-center  ">
+                    <div class="col-10 col-md-10 mx-auto d-flex justify-content-center flex-column">
+                        
+                        <div class="row card p-1 brdr-radius-5 mb-3" data-aos="fade-up">
+                            <center><h1>Empty card</h1></center>
+                            <!-- <img src="/return-files/others/dog.jpg"> -->
+                        </div>
+                        <div class="row card p-1 brdr-radius-5 mb-3" data-aos="fade-up">
+                            <!-- <center><h1>Empty card</h1></center> -->
+                            <img src="/return-files/others/dog1.jpg">
+                        </div>
+                        <div class="row card p-1 brdr-radius-5 mb-3" data-aos="fade-up">
+                            <center><h1>Empty card</h1></center>
+                            <!-- <img src="/return-files/others/dog.jpg"> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+{% endif %}
+
+
+      {% endblock %}

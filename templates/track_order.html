@@ -1,0 +1,137 @@
+{% extends "static_customer.html" %}
+{% block body %}
+{% load mathfilters %}
+    {% for i in order %}
+         <div class="app-main__outer">
+         <!-- ! App inner main here -->
+         <div class="myAppCenter p-3" >
+             <!-- ? ===============> Track Order <=============== -->
+             <div class="row orderStatusWrapper justify-content-center flex-column ">
+                <div class="col-10 col-md-6 mx-auto d-flex justify-content-center">
+                    <div class="row card p-3">
+                        <!-- ? ===============> Track Order Col <=============== -->
+                            <!-- {{ i.order_status}} -->
+                            <span class="text-danger text-center" style="font-size:25px;border: 1px solid red;box-shadow: 10px 10px 5px -7px ">ORDER ID: {{i.id}}</span><br>
+                             <h2 class="text-center my-2 d-flex justify-content-center">
+                                {% for n in i.delivery_otp|stringformat:"i"  %}
+                                <span class="p-2 m-1 text-danger" style="border: 1px solid Red; box-shadow: 10px 10px 5px -7px rgba(57,56,56,0.75);
+-webkit-box-shadow: 10px 10px 5px -7px rgba(57,56,56,0.75);
+-moz-box-shadow: 10px 10px 5px -7px rgba(57,56,56,0.75);">{{n}}</span>  
+                                {% endfor %}</h2>
+                        <div class=" d-flex justify-content-center {% if i.order_status|lower == 'order placed' or i.order_status|lower == 'order accept' or i.order_status|lower == 'preparing food' or i.order_status|lower == 'ready for takeaway' or i.order_status|lower == 'ready for delivery' or i.order_status|lower == 'order handed over' %} text-success{% elif i.order_status|lower == 'order cancelled' %}text-danger{% endif %}">
+                            <div class="statusWrapper ht">
+                                <div class="status">
+                                    <div class="statusIcon d-flex justify-content-center">
+                                        <i class="far fa-clipboard"></i>
+                                    </div>
+                                    <div class="statusDescription">
+                                        {% if i.order_status|lower == 'order placed' or i.order_status|lower == 'order accept' or i.order_status|lower == 'preparing food' or i.order_status|lower == 'ready for takeaway' or i.order_status|lower == 'ready for delivery' or i.order_status|lower == 'order handed over' %} <span ><i class="fas fa-check-circle"></i></span> {% elif i.order_status|lower == 'order cancelled' %}<span ><i class="fas fa-times-circle text-danger"></i></span>{% else %}<span ><i class="far fa-circle"></i></span>{% endif %}
+                                        <span class="ms-3 ms-md-5"><b>Order Placed</b></span>
+                                    </div>
+                                </div>
+                                <div class="statusLine border border-2 border-secondary"></div>
+
+                            </div>
+                        </div>
+
+                        <!-- ? ===============> Track Order Col <=============== -->
+                        <div class=" d-flex justify-content-center {% if i.order_status|lower == 'order accept' or i.order_status|lower == 'preparing food' or i.order_status|lower == 'ready for takeaway' or i.order_status|lower == 'ready for delivery' or i.order_status|lower == 'order handed over' %} text-success{% elif i.order_status|lower == 'order cancelled' %}text-danger{% endif %}">
+                            <div class="statusWrapper ht">
+                                <div class="status">
+                                    <div class="statusIcon d-flex justify-content-center">
+                                        <i class="fas fa-clipboard-check"></i>
+                                    </div>
+                                    <div class="statusDescription">
+                                        {% if i.order_status|lower == 'order accept' or i.order_status|lower == 'preparing food' or i.order_status|lower == 'ready for takeaway' or i.order_status|lower == 'ready for delivery' or i.order_status|lower == 'order handed over' %} <span ><i class="fas fa-check-circle"></i></span> {% elif i.order_status|lower == 'order cancelled' %}<span ><i class="fas fa-times-circle text-danger"></i></span>{% else %}<span ><i class="far fa-circle"></i></span>{% endif %}
+                                        <span class="ms-3 ms-md-5"><b>Order Accepted</b></span>
+                                    </div>
+                                </div>
+                                <div class="statusLine border border-2 border-secondary"></div>
+                            </div>
+                        </div>
+                        <!-- ? ===============> Track Order Col <=============== -->
+                        <div class=" d-flex justify-content-center {% if i.order_status|lower == 'preparing food' or i.order_status|lower == 'ready for takeaway' or i.order_status|lower == 'ready for delivery' or i.order_status|lower == 'order handed over' %}text-success
+                        {% elif i.order_status|lower == 'order cancelled' %}text-danger{% endif %}">
+                            <div class="statusWrapper ht">
+                                <div class="status">
+                                <div class="statusIcon d-flex justify-content-center">
+                                        <i class="fas fa-pizza-slice"></i>
+                                    </div>
+                                    <div class="statusDescription">
+                                        {% if i.order_status|lower == 'preparing food' or i.order_status|lower == 'ready for takeaway' or i.order_status|lower == 'ready for delivery' or i.order_status|lower == 'order handed over' %} <span ><i class="fas fa-check-circle"></i></span> {% elif i.order_status|lower == 'order cancelled' %}<span ><i class="fas fa-times-circle text-danger"></i></span>{% else %}<span ><i class="far fa-circle"></i></span>{% endif %}
+                                        <span class="ms-3 ms-md-5"><b>Preparing Food</b></span>
+                                </div>
+                                </div>
+                                <div class="statusLine border border-2 border-secondary"></div>
+                            </div>
+                        </div>
+
+                        <!-- ? ===============> Track Order Col <=============== -->
+                        <div class=" d-flex justify-content-center {% if i.order_status|lower == 'ready for takeaway' or i.order_status|lower == 'ready for delivery' or i.order_status|lower == 'order handed over' %} text-success{% elif i.order_status|lower == 'order cancelled' %}text-danger{% endif %}">
+                            <div class="statusWrapper ht">
+                                <div class="status">
+                                {% if i.delivery_type == 'take_away' %}
+                                    <div class="statusIcon d-flex justify-content-center">
+                                           <i class="fas fa-box"></i>
+                                        </div>
+                                        <div class="statusDescription">
+                                            {% if i.order_status|lower == 'ready for takeaway' or i.order_status|lower == 'ready for delivery' or i.order_status|lower == 'order handed over' %} <span ><i class="fas fa-check-circle"></i></span> {% elif i.order_status|lower == 'order cancelled' %}<span ><i class="fas fa-times-circle text-danger"></i></span>{% else %}<span ><i class="far fa-circle"></i></span>{% endif %}
+                                            <span class="ms-3 ms-md-5"><b>Ready for Takeaway</b></span>
+                                    </div>
+                                {% elif i.delivery_type == 'door_delivery' %}
+                                    <div class="statusIcon d-flex justify-content-center">
+                                           <i class="fas fa-shipping-fast"></i>
+                                        </div>
+                                        <div class="statusDescription">
+                                            {% if i.order_status|lower == 'ready for takeaway' or i.order_status|lower == 'ready for delivery' or i.order_status|lower == 'order handed over' %} <span ><i class="fas fa-check-circle"></i></span> {% elif i.order_status|lower == 'order cancelled' %}<span ><i class="fas fa-times-circle text-danger"></i></span>{% else %}<span ><i class="far fa-circle"></i></span>{% endif %}
+                                            <span class="ms-3 ms-md-5"><b>Ready for Delivery</b></span>
+                                    </div>
+                                {% endif %}
+                                </div>
+                                <div class="statusLine border border-2 border-secondary"></div>
+                            </div>
+                        </div>
+
+                        <!-- ? ===============> Track Order Col <=============== -->
+                        {% if i.order_status|lower != 'order cancelled' %}
+                        <div class=" d-flex justify-content-center {% if i.order_status|lower == 'order handed over' %} text-success{% elif i.order_status|lower == 'order cancelled' %}text-danger{% endif %}">
+                            <div class="statusWrapper">
+                                <div class="status">
+                                <div class="statusIcon d-flex justify-content-center">
+                                         <i class="fas fa-handshake"></i>
+                                    </div>
+                                    <div class="statusDescription">
+                                        {% if i.order_status|lower == 'order handed over' %} <span ><i class="fas fa-check-circle"></i></span> {% elif i.order_status|lower == 'order cancelled' %}<span ><i class="fas fa-times-circle text-danger"></i></span>{% else %}<span ><i class="far fa-circle"></i></span>{% endif %}
+                                        <span class="ms-3 ms-md-5"><b>Order Handed over</b></span>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+
+                        <!-- ? ===============> Track Cancel <=============== -->
+                        {% if i.order_status|lower == 'order cancelled' %}
+
+                        <div class=" d-flex justify-content-center text-danger">
+                            <div class="statusWrapper">
+                                <div class="status">
+                                <div class="statusIcon d-flex justify-content-center">
+                                         <i class="far fa-times-circle"></i>
+                                    </div>
+                                    <div class="statusDescription">
+                                        {% if i.order_status|lower == 'order cancelled' %}<span ><i class="fas fa-times-circle text-danger"></i></span>{% else %}<span ><i class="far fa-circle"></i></span>{% endif %}
+                                        <span class="ms-3 ms-md-5"><b>Order Cancelled</b></span>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+             </div>
+
+             <div class="col-10 col-md-6 mx-auto my-3">
+                 <a href="/order_details/{{i.id}}"><div class="btn btn-danger text-light d-block"> ORDER DETAILS </div></a>
+             </div>
+            {% endfor %}
+                {% endblock %}            

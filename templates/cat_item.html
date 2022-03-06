@@ -1,0 +1,62 @@
+{% extends "static.html" %}
+{% block body %}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card overflow-hidden">
+        <!-- /#header -->
+        <!-- /#header -->
+
+
+  <h3>{{cat_data.name}}</h3>
+  <center><form method="POST" action=""> {% csrf_token %}<button class="btn btn-primary btn-round " type="submit">Add All</button><input style="display:none;" type="number" name="item_id" value=0></form></center>
+  <table id="example" class="display table table-bordered" style="width:100%">
+        <thead>
+            <tr>
+                <th>Image</th>
+                <th>Name</th>
+                <th>Remove</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- {{catitem_data}} -->
+            <!-- {{item_data}} -->
+            {% for i in catitem_data %}
+                <input type="hidden" name="item_id" value="{{i.item_id}}">
+                    <tr>
+                        <td><img src="/return-files/item/{{i.itemimage}}"  style="width:100px;height: 100px;"></td>
+                        <td>{{i.itemname}}</td>
+                        <td><button class="btn btn-dange"><i class="far fa-trash-alt"></i></button></td>
+                    </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <h3>Item List </h3>
+    <table id="example" class="display table table-bordered" style="width:100%">
+        <thead>
+            <tr>
+                <th>Image</th>
+                <th>Name</th>
+                <th>ADD</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for i in item_data %}
+                <form action="" method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="item_id" value="{{i.id}}">
+                    <tr>
+                        <td><img src="/return-files/item/{{i.itemimage}}"  style="width:100px;height: 100px;"></td>
+                        <td>{{i.itemname}}</td>
+                        <td><button class="btn btn-info"><i class="fas fa-plus"></i></button></td>
+                    </tr>
+                </form>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+</div>
+</div>
+
+
+{% endblock %}

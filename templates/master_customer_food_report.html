@@ -1,0 +1,377 @@
+{% extends "static.html" %}
+{% block body %}
+
+  <!-- bootstrap-multiselect.css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.15/css/bootstrap-multiselect.css">
+    <!-- bootstrap-multiselect.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.15/js/bootstrap-multiselect.js"></script>
+<style type="text/css">
+        #multiselect .multiselect-selected .form-check-label {
+            color: red;
+        }
+        span.multiselect {
+        padding: 2px 6px;
+        font-weight: bold;
+        cursor: pointer;
+         -webkit-appearance: menulist-button;
+        color: black;
+    }
+    </style>
+ <script type="text/javascript">
+    $(document).ready(function(){
+    $('#item_type').multiselect({
+        includeSelectAllOption: true,
+            allSelectedText: 'All Selected..',
+            enableFiltering: true,
+            maxHeight: 400,
+            dropDown: true,
+            buttonWidth: '400px'
+    });
+
+    });
+</script>
+<!-- {{from_date}} -->  
+<!-- {{to_date}}     -->
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+        <!-- Content -->
+                    
+            <form action="" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                <div class="container" style="margin-top: 150px">
+                    <h3>Add a Item</h3>
+                    <div class="row">
+                        <div class="col-sm-9 col-lg-9">
+                            <div class="form-group">
+                                <label>From Date: </label>
+                                <input type="date" name="from_date" class="form-control" value="{{from_date|date:'Y-m-d'}}"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-9 col-lg-9">
+                            <div class="form-group">
+                                <label>To Date: </label>
+                                <input type="date" name="to_date" class="form-control" value="{{to_date|date:'Y-m-d'}}" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-9 col-lg-9">
+                            <div class="form-group">
+                                <label>Select Item: </label>
+                                <select id="item_type" name="item_type" class="form-control" multiple="">
+                                    {% for i in item_list %}
+                                        <option value="{{i.id}}">{{i.itemname}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top: 10px">
+                        <div class="col-sm-9 col-lg-39" style="text-align: center">
+                            <button class="btn btn-primary btn-round " type="submit">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- {{customer_dic}} -->
+
+</br>   
+
+  <h3>Order Report</h3>
+    <table id="example" class="table table-bordered table-responsive" >
+        <thead>
+            <tr>
+                <th>Customer Name</th>
+                <th>Mobile Number</th>
+                {% for i in food_type %}
+                    {% for j in item_list %}
+                        {% if i == j.id|slugify %}
+                            <th>{{j.itemname}}</th>
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
+                <th>Total Quantity</th>
+                <th>Total Amount</th>
+                <th>Last Order ID</th>
+                <th>Last Order Amount</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            <!-- {{customer_list}} -->
+            {% for c in customer_list %}
+                <tr> 
+                    {% for f,v in c.items %}
+                        {% if f == 'customer_name' %}
+                            <td>{{v}}</td>
+                        {% elif f == 'username' %}
+                            <td>{{v}}</td>
+                        {% endif %}
+                    {% endfor %}
+                    {% for i in food_type %}
+                        {% for j in item_list %}
+                            {% if i == j.id|slugify %}
+                                 {% for f,v in c.items %}
+                                    {% if f == j.itemname %}
+                                        <td>{{v}}</td>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                        {% endfor %}
+                    {% endfor %}
+                    {% for f,v in c.items %}
+                        {% if f == 'tot_qty' %}
+                            <td>{{v}}</td>
+                        {% endif %}
+                    {% endfor %}
+                    {% for f,v in c.items %}
+                        {% if f == 'tot_amt' %}
+                            <td>{{v}}</td>
+                        {% endif %}
+                    {% endfor %}
+                    {% for f,v in c.items %}
+                        {% if f == 'order_id' %}
+                            <td>{{v}}</td>
+                        {% endif %}
+                    {% endfor %}
+                    {% for f,v in c.items %}
+                        {% if f == 'grand_total' %}
+                            <td>{{v}}</td>
+                        {% endif %}
+                    {% endfor %}
+                   
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+     <script type="text/javascript">
+$(document).ready(function() {
+    $('#example').DataTable( {
+        dom: 'Bfrtip',
+        buttons: [
+            'copyHtml5',
+            'excelHtml5',
+            'csvHtml5',
+            'pdfHtml5',
+            'print',
+            'pageLength'
+        ],
+         lengthMenu: [
+            [25, 50, 75, -1],
+            ['25 rows', '50 rows', '75 rows', 'Show all']
+        ]
+    } );
+} );
+                </script>
+
+
+{% if item_type != 'ALL' %}
+<!-- ---------------------------------------- GRaph Data ------------------------------------------- -->
+<!-- Styles -->
+<style>
+#chartdiv {
+  width: 100%;
+  height: 500px;
+}
+
+</style>
+
+<!-- Resources -->
+<script src="https://cdn.amcharts.com/lib/4/core.js"></script>
+<script src="https://cdn.amcharts.com/lib/4/charts.js"></script>
+<script src="https://cdn.amcharts.com/lib/4/themes/animated.js"></script>
+
+<!-- Chart code -->
+<script>
+am4core.ready(function() {
+
+// Themes begin
+am4core.useTheme(am4themes_animated);
+// Themes end
+
+// Create chart instance
+var chart = am4core.create("chartdiv", am4charts.XYChart);
+
+// Add data
+chart.data = {{graph_data}};
+
+// Set input format for the dates
+chart.dateFormatter.inputDateFormat = "yyyy-MM-dd";
+
+// Create axes
+var dateAxis = chart.xAxes.push(new am4charts.DateAxis());
+var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+
+// Create series
+var series = chart.series.push(new am4charts.LineSeries());
+series.dataFields.valueY = "Quantity";
+series.dataFields.dateX = "date";
+series.tooltipText = "{Quantity}"
+series.strokeWidth = 2;
+series.minBulletDistance = 15;
+
+// Drop-shaped tooltips
+series.tooltip.background.cornerRadius = 20;
+series.tooltip.background.strokeOpacity = 0;
+series.tooltip.pointerOrientation = "vertical";
+series.tooltip.label.minWidth = 40;
+series.tooltip.label.minHeight = 40;
+series.tooltip.label.textAlign = "middle";
+series.tooltip.label.textValign = "middle";
+
+// Make bullets grow on hover
+var bullet = series.bullets.push(new am4charts.CircleBullet());
+bullet.circle.strokeWidth = 2;
+bullet.circle.radius = 4;
+bullet.circle.fill = am4core.color("#fff");
+
+var bullethover = bullet.states.create("hover");
+bullethover.properties.scale = 1.3;
+
+// Make a panning cursor
+chart.cursor = new am4charts.XYCursor();
+chart.cursor.behavior = "panXY";
+chart.cursor.xAxis = dateAxis;
+chart.cursor.snapToSeries = series;
+
+// Create vertical scrollbar and place it before the value axis
+chart.scrollbarY = new am4core.Scrollbar();
+chart.scrollbarY.parent = chart.leftAxesContainer;
+chart.scrollbarY.toBack();
+
+// Create a horizontal scrollbar with previe and place it underneath the date axis
+chart.scrollbarX = new am4charts.XYChartScrollbar();
+chart.scrollbarX.series.push(series);
+chart.scrollbarX.parent = chart.bottomAxesContainer;
+
+dateAxis.start = 0.79;
+dateAxis.keepSelection = true;
+
+
+}); // end am4core.ready()
+</script>
+
+<!-- HTML -->
+<div id="chartdiv"></div>
+amCharts    
+
+{% else %}
+    
+    <!-- Styles -->
+<style>
+#chartdiv {
+  width: 100%;
+  height: 500px;
+}
+</style>
+
+<!-- Resources -->
+<script src="https://cdn.amcharts.com/lib/4/core.js"></script>
+<script src="https://cdn.amcharts.com/lib/4/charts.js"></script>
+<script src="https://cdn.amcharts.com/lib/4/themes/animated.js"></script>
+
+<!-- Chart code -->
+<script>
+am4core.ready(function() {
+
+// Themes begin
+am4core.useTheme(am4themes_animated);
+// Themes end
+
+// Create chart instance
+var chart = am4core.create("chartdiv", am4charts.XYChart);
+chart.scrollbarX = new am4core.Scrollbar();
+
+// Add data
+chart.data = {{graph_data}};
+
+// Create axes
+var categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
+categoryAxis.dataFields.category = "Item Name";
+categoryAxis.renderer.grid.template.location = 0;
+categoryAxis.renderer.minGridDistance = 30;
+categoryAxis.renderer.labels.template.horizontalCenter = "right";
+categoryAxis.renderer.labels.template.verticalCenter = "middle";
+categoryAxis.renderer.labels.template.rotation = 270;
+categoryAxis.tooltip.disabled = true;
+categoryAxis.renderer.minHeight = 110;
+
+var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+valueAxis.renderer.minWidth = 50;
+
+// Create series
+var series = chart.series.push(new am4charts.ColumnSeries());
+series.sequencedInterpolation = true;
+series.dataFields.valueY = "Quantity";
+series.dataFields.categoryX = "Item Name";
+series.tooltipText = "[{categoryX}: bold]{valueY}[/]";
+series.columns.template.strokeWidth = 0;
+
+series.tooltip.pointerOrientation = "vertical";
+
+series.columns.template.column.cornerRadiusTopLeft = 10;
+series.columns.template.column.cornerRadiusTopRight = 10;
+series.columns.template.column.fillOpacity = 0.8;
+
+// on hover, make corner radiuses bigger
+var hoverState = series.columns.template.column.states.create("hover");
+hoverState.properties.cornerRadiusTopLeft = 0;
+hoverState.properties.cornerRadiusTopRight = 0;
+hoverState.properties.fillOpacity = 1;
+
+series.columns.template.adapter.add("fill", function(fill, target) {
+  return chart.colors.getIndex(target.dataItem.index);
+});
+
+// Cursor
+chart.cursor = new am4charts.XYCursor();
+
+}); // end am4core.ready()
+</script>
+
+<!-- HTML -->
+<div id="chartdiv"></div>                                                   
+amCharts
+
+{% endif %}
+    <!----------------------------------- cdn  data table Scripts -------------------->
+    <link href="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css">
+    <link href="https://cdn.datatables.net/buttons/1.6.5/css/buttons.dataTables.min.css">
+    <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.6.5/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.6.5/js/buttons.print.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.6.5/js/buttons.html5.min.js"></script>
+
+    <!-- ------------------------------------------------------------------------- -->
+
+<!-- <script src="https://cdn.jsdelivr.net/npm/jquery@2.2.4/dist/jquery.min.js"></script> -->
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.4/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery-match-height@0.7.2/dist/jquery.matchHeight.min.js"></script>
+<!-- <script src="/static/assets/js/main.js"></script> -->
+<!--  Chart js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.7.3/dist/Chart.bundle.min.js"></script>
+<!--Chartist Chart-->
+<script src="https://cdn.jsdelivr.net/npm/chartist@0.11.0/dist/chartist.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartist-plugin-legend@0.6.2/chartist-plugin-legend.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery.flot@0.8.3/jquery.flot.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/flot-pie@1.0.0/src/jquery.flot.pie.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/flot-spline@0.0.1/js/jquery.flot.spline.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/simpleweather@3.1.0/jquery.simpleWeather.min.js"></script>
+<script src="/static/assets/js/init/weather-init.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@3.9.0/dist/fullcalendar.min.js"></script>
+<script src="/static/assets/js/init/fullcalendar-init.js"></script>
+
+{% endblock %}

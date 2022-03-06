@@ -1,0 +1,219 @@
+html,
+body {
+  position: relative;
+  height: 100%;
+}
+
+
+.myBannerWrapper .carousel-item {
+  height: 300px;
+}
+
+span.food-price {
+  display: inline !important;
+}
+
+.food-price img{
+  width: 20px ! important;
+  height: 20px;
+}
+
+
+a {
+  text-decoration: none !important;
+}
+
+.brdr-radius-1 {
+  border-radius: 10px;
+}
+
+.brdr-radius-2 {
+  border-radius: 20px;
+}
+
+.brdr-radius-3 {
+  border-radius: 30px;
+}
+
+.brdr-radius-4 {
+  border-radius: 40px;
+}
+
+.brdr-radius-5 {
+  border-radius: 50px;
+}
+
+.click_but{
+  cursor: pointer;
+}
+
+.text-danger .fa-plus-circle {
+  cursor: pointer;
+}
+
+.card-img img,
+.categorie img,
+.app-footer i,
+.far.fa-user-circle,
+.accountContent,
+.categoryNavigation .scrolls{
+  cursor: pointer;
+}
+
+.app-wrapper-footer .far.fa-user-circle{
+    font-size: 28px;
+}
+
+/* ! Special area */
+.specialHeader .specialHeader-left {
+  font-weight: bold;
+}
+
+/* ! History area */
+.historyWrapper .historyHeader {
+  font-weight: bold;
+}
+
+/* ! Categories area */
+.allCategoriesBody .categorieImage img {
+  width: 60%;
+  border-radius: 50%;
+}
+
+.allCategoriesBody .categorieDescription {
+  width: 60%;
+}
+
+@media only screen and (max-width: 600px) {
+  .allCategoriesBody .categorieImage img {
+    width: 95%;
+  }
+  .allCategoriesBody .categorieDescription {
+    width: 85%;
+  }
+}
+/* ! Footer area */
+.app-wrapper-footer i {
+  font-size: 20px;
+}
+
+.app-wrapper-footer i {
+  color: #f1f4f6;
+}
+
+.app-wrapper-footer .ftrOption .iconDiv {
+  border-radius: 50%;
+  background-color: #3f6ad8;
+  width: 35px;
+  height: 35px;
+}
+
+/* ! Card Parts */
+.card-img img {
+  height: 300px;
+}
+
+@media only screen and (max-width: 600px) {
+  .card-img img {
+    height: 200px;
+  }
+}
+
+.card .img-description {
+  font-weight: bold;
+  font-size: 20px;
+}
+
+/* ! Status Parts */
+.statusWrapper.ht {
+  position: relative;
+  height: 130px;
+  width: 250px;
+}
+.statusWrapper {
+  width: 250px;
+}
+
+.statusWrapper .statusLine {
+  width: 0;
+  height: 90px;
+  position: absolute;
+  bottom: -15px;
+  left: 5px;
+}
+
+.statusWrapper .statusDescription i {
+  color: green;
+  margin-top: 8px;
+}
+
+.statusWrapper .statusIcon {
+  font-size: 25px;
+}
+
+.statusWrapper .statusIcon img {
+  height: 25px;
+}
+
+/* ! Category Section */
+
+.categoryWrapper .categoryNavigation ul {
+  width: 90%;
+  overflow-x: auto;
+  height: 50px;
+  white-space: nowrap;
+}
+
+.scrolling-wrapper {
+  overflow-x: scroll;
+  overflow-y: hidden;
+  white-space: nowrap;
+}
+.scrolling-wrapper .scrolls {
+  display: inline-block;
+}
+
+.scrolling-wrapper .scrolls.activeParent {
+  border-bottom: 5px solid #3f6ad8;
+  border-radius: 5px;
+}
+
+.fadeInAni {
+  animation: fadeInAni 2s linear 1;
+}
+
+@keyframes fadeInAni {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* ! Order details */
+.item .category .categoryImage img {
+  border-radius: 50%;
+}
+
+.orderDetailsWrapper .detailDivider {
+  border-bottom: 1px dashed black;
+  width: 80%;
+  margin: 16px auto;
+}
+
+.accountWrapper .accountHeader {
+  height: 300px;
+}
+
+.accountWrapper .accountHeader .profile {
+  font-size: 80px;
+  border-radius: 50%;
+  background-color: thistle;
+  height: 100px;
+  width: 100px;
+}
+
+.accountContent .content {
+  font-weight: 400;
+}

@@ -1,0 +1,472 @@
+{% extends "static.html" %}
+{% block body %}
+{% load mathfilters %}
+
+
+  
+
+    <div class="app-main__outer">
+
+          {% for j in order %}
+            {% if j.order_status != 'order cancelled' %}
+         <!-- ! App inner main here -->
+        <div class="myAppCenter p-3" >
+            <!-- ? ===============> Order Details <=============== -->
+            <div class="orderDetailsWrapper">
+                <div class="row  justify-content-center  ">
+                    <div class="col-10 col-md-10 mx-auto d-flex justify-content-center flex-column">
+                        <!-- ? ===============> Order Item<=============== -->
+                        <div class="row card p-1 brdr-radius-5 mb-3" data-aos="fade-up">
+                        <!-- ? ===============> Order Head<=============== -->
+                            <div class="detailsHead">
+                                <div >
+                                    <span class="text-secondary">{{j.added_on}} </span><br>
+                                        <span class="text-secondary text-danger">Name:&nbsp;{{j.name}}</span>
+                                        <span class="pull-right text-danger"  style="float: right;">
+                                            {% if j.order_status|lower == 'order placed' %}
+                                                <i class="far fa-clipboard">&nbsp;{{j.order_status|upper}}</i>
+                                            {% elif j.order_status|lower == 'order accept' %}
+                                                <i class="fas fa-clipboard-check">&nbsp;{{j.order_status|upper}}</i>
+                                            {% elif j.order_status|lower == 'preparing food' %}
+                                                <i class="fas fa-pizza-slice">&nbsp;{{j.order_status|upper}}</i>
+                                            {% elif j.order_status|lower == 'ready for takeaway' %}
+                                               <i class="fas fa-box">&nbsp;{{j.order_status|upper}}</i>
+                                            {% elif j.order_status|lower == 'ready for delivery' %}
+                                                <i class="fas fa-shipping-fast">&nbsp;{{j.order_status|upper}}</i>
+                                            {% elif j.order_status|lower == 'order handed over' %}
+                                               <i class="fas fa-handshake" style="color:green">&nbsp;{{j.order_status|upper}}</i>
+                                            {% elif j.order_status|lower == 'order cancelled' %}
+                                                <i class="far fa-times-circle">&nbsp;{{j.order_status|upper}}</i>
+                                            {% endif %}
+                                        </span><br>
+                                        <span class="pull-right text-danger"  style="float: right;">Mobile No:&nbsp;{{j.username}}</span>
+                                </div>             
+                            </div>
+                             <h2 class="text-center my-2 d-flex justify-content-center">
+                                <span class="p-2 m-1 text-danger" style="border: 1px solid Red; box-shadow: 10px 10px 5px -7px rgba(57,56,56,0.75);
+-webkit-box-shadow: 10px 10px 5px -7px rgba(57,56,56,0.75);
+-moz-box-shadow: 10px 10px 5px -7px rgba(57,56,56,0.75);">Order Id: </span> 
+                                {% for n in j.id|stringformat:"i"  %}
+                                <span class="p-2 m-1 text-danger" style="border: 1px solid Red; box-shadow: 10px 10px 5px -7px rgba(57,56,56,0.75);
+-webkit-box-shadow: 10px 10px 5px -7px rgba(57,56,56,0.75);
+-moz-box-shadow: 10px 10px 5px -7px rgba(57,56,56,0.75);">{{n}}</span>  
+                                {% endfor %}
+
+
+                            </h2>
+                            <p class=" text-secondary text-center" style="font-size:12px">Note: show or tell this PIN to staff for takeaway</p>
+                            {% for i in order_item %}
+                                {% if j.id == i.order_id %}
+                                    <!-- ? ===============> Order No.Of Item<=============== -->
+                                    <div class="my-2 item">
+                                        <div class="category row">
+                                            <div class="categoryImage col-5">
+                                                <img src="/return-files/item/{{i.item_image}}" alt="" width="100%">                                
+                                            </div>
+                                            <div class=" text-center col-4 d-flex flex-column align-items-center justify-content-center">
+                                                <span><Strong>{{i.item_name}}</Strong></span>
+                                                <span><Strong>X {{i.quantity}}</Strong></span>
+                                                 
+                                            </div>
+                                            <div class="col-3 d-flex align-items-center justify-content-center fw-bolder">
+                                                <span><Strong>&#8377; {{i.price}}</Strong></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                            <!-- ? ===============> Order Payment area<=============== -->
+                            <div class="detailDivider"></div>                        
+                            <div class="container-fluid">
+                              <div class="row">
+                                <div class="col-12">
+                                  <div class="row">
+                                    <div class="col-6 text-center fw-bold text-danger">
+                                        Total Amount
+                                    </div>
+                                    <div class="col-6 text-center fw-bold text-danger">
+                                        <span style="text-align:right!important;">{{j.total|floatformat:2}}</span>
+                                    </div>
+                                  </div>
+                                  <div class="row">
+                                    <div class="col-6 text-center">
+                                       Tax {{j.gst}}
+                                    </div>
+                                    <div class="col-6 text-center">
+                                        <span style="text-align:right!important;">{{j.total|mul:j.gst|div:100|floatformat:2}}</span>
+                                    </div>
+                                  </div>
+                                  <div class="row">
+                                    <div class="col-6 text-center">
+                                       Service Charge
+                                    </div>
+                                    <div class="col-6 text-center">
+                                            <span style="text-align:right!important;">{{j.service_charge|floatformat:2}}</span>
+                                    </div>
+                                  </div>
+                                  <div class="row">
+                                    <div class="col-6 text-center">
+                                       Door Delivery Charge
+                                    </div>
+                                    <div class="col-6 text-center">
+                                            <span style="text-align:right!important;" id="delivery_charge">{% if j.delivery_charge == 0 %}-{% else %}{{j.delivery_charge|floatformat:2}}{% endif %}</span>
+                                    </div>
+                                  </div>
+                                  {% if j.offer_percentage_amount != 0 %}
+                                  <div class="row">
+                                    <div class="col-6 text-center">
+                                       Special Discount
+                                    </div>
+                                    <div class="col-6 text-center">
+                                            <span style="text-align:right!important;" id="offer_percentage_amount">{{j.offer_percentage_amount|floatformat:2}}</span>
+                                    </div>
+                                  </div>
+                                  {% endif %}
+                                  <div class="row">
+                                    <div class="col-6 text-center  text-success fw-bold">
+                                        Grand Total
+                                    </div>
+                                    <div class="col-6 text-center text-success fw-bold">
+                                            <span style="text-align:right!important; display: none;" id='grand_total_html' >{{j.grand_total|floatformat:2}}</span>
+                                            <span style="text-align:right!important;" id='grand_total' >{{j.grand_total|floatformat:2}}</span>
+                                    </div>
+
+                                    <div class="detailDivider"></div>
+
+                                  </div>        
+                                        <div class="col-12 text-center ">
+                                            <label class="mt-5s">Arrival Time:</label>
+                                            {{j.arrival_time}}<br>
+                                            What Time to delievry your prdouct or what time to collect your product
+                                        </div>
+                                      <div class="row mt-5 text-center  mx-auto" style="border: 1px solid black; width: fit-content; margin: 0px 0px 0px 0px;box-shadow: 10px 10px 5px 0px rgba(122,113,234,0.75);
+                                -webkit-box-shadow: 10px 10px 5px 0px rgba(122,113,234,0.75);
+                                -moz-box-shadow: 10px 10px 5px 0px rgba(122,113,234,0.75); ">
+                                        <div class=" text-center  col-md-12 col-sm-12 col-lg-6">
+                                          <div class="form-check form-switch">
+                                            <input class="form-check-input" type="radio"  name="delivery_type_{{j.id}}" 
+                                            {% if j.delivery_type == 'door_delivery' %}checked=""{% endif %} value="door_delivery" disabled="">
+                                            <label class="form-check-label" for="delievrytype_label"  {% if j.delivery_type == 'door_delivery' %}style="color: red"{% endif %}>Door Delivery</label>
+                                          </div>
+                                        </div>
+                                        <div class=" text-center col-md-12 col-sm-12 col-lg-6">
+                                          <div class="form-check form-switch">
+                                            <input class="form-check-input" type="radio"  name="delivery_type_{{j.id}}" {% if j.delivery_type == 'take_away' %} style="color: red" checked="" {% endif %} value="take_away" disabled="">
+                                            <label class="form-check-label" for="delievrytype_label" {% if j.delivery_type == 'take_away' %} style="color: red" {% endif %}>Take Away</label>
+                                          </div>
+                                        </div>
+                                       
+                                      </div><br>
+                                       <h2 class="text-center my-2 d-flex justify-content-center">
+                                                
+                                                <span class="p-2 m-1 text-danger" style="border: 1px solid Red; box-shadow: 10px 10px 5px -7px rgba(57,56,56,0.75);
+                -webkit-box-shadow: 10px 10px 5px -7px rgba(57,56,56,0.75);
+                -moz-box-shadow: 10px 10px 5px -7px rgba(57,56,56,0.75);">{{j.payment_mode|upper}} PAYMENT</span>
+
+                {% if j.order_status|lower == 'order handed over' or j.order_status|lower == 'order cancelled' %}
+                    <span class="p-2 m-1 text-danger" style="border: 1px solid Red; box-shadow: 10px 10px 5px -7px rgba(57,56,56,0.75);
+                    -webkit-box-shadow: 10px 10px 5px -7px rgba(57,56,56,0.75);
+                    -moz-box-shadow: 10px 10px 5px -7px rgba(57,56,56,0.75);">{{j.order_status|upper}}</span> 
+
+                {% endif %}
+                                            </h2>   
+                                        
+                                        
+                                        <div class=" my-2 p-2 col-12 mx-auto d-flex justify-content-between">
+                                                
+                                             {% if j.order_status|lower == 'order handed over' or j.order_status|lower == 'order cancelled'  %}
+
+                                             {% else %}
+                                                    <a href="/cancel_order/{{j.id}}"><button style="margin: 0px 0px 0px 10px;height:70px;" type="button" class="btn btn-danger">Cancel Order</button></a>
+                                            {% endif %}
+                                            <div id="status_button_{{j.id}}">
+                                                    {% if j.order_status|lower == 'order placed' %}
+                                                        <button class="btn btn-success today_order_ " type_="order_status_update" updatefield="order accept" my_id="{{j.id}}" style="margin: 0px 0px 0px 10px;height:70px;"> Order Accept</button>
+                                                    {% elif j.order_status|lower == 'order accept' %}
+                                                        <button class="btn btn-success today_order_ " type_="order_status_update" updatefield="preparing food" my_id="{{j.id}}" style="margin: 0px 0px 0px 10px;height:70px;">Preparing Food</button>
+                                                    {% elif j.order_status|lower == 'preparing food' %}
+                                                        <button class="btn btn-success today_order_ " type_="order_status_update" updatefield="{% if j.delivery_type == 'door_delivery' %}ready for delivery{% else %}ready for takeaway{% endif %}" my_id="{{j.id}}" style="margin: 0px 0px 0px 10px;height: 70px;"> {% if j.delivery_type == 'door_delivery' %}Ready For delivery{% else %}Read For Take away{% endif %} </button>
+                                                    {% elif j.order_status|lower == 'ready for takeaway' %}
+                                                       <a href="/otp/{{j.id}}"><button class="btn btn-success" style="margin: 0px 0px 0px 10px;height:70px;"> Ready For Delivery </button></a>
+                                                    {% elif j.order_status|lower == 'ready for delivery' %}
+                                                        <a href="/otp/{{j.id}}"><button class="btn btn-success" style="margin: 0px 0px 0px 10px;height:70px;"> Order Handover </button></a>  
+                                                    {% endif %}   
+                                            </div>
+                                        </div>
+
+                                        <br>
+
+                                </div>
+                              </div>
+                            </div>
+
+                                                   
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+  {% endif %}
+
+{% endfor %}
+
+
+
+
+{% for j in order_handover %}
+         <!-- ! App inner main here -->
+        <div class="myAppCenter p-3" >
+            <!-- ? ===============> Order Details <=============== -->
+            <div class="orderDetailsWrapper">
+                <div class="row  justify-content-center  ">
+                    <div class="col-10 col-md-10 mx-auto d-flex justify-content-center flex-column">
+                        <!-- ? ===============> Order Item<=============== -->
+                        <div class="row card p-1 brdr-radius-5 mb-3" data-aos="fade-up">
+                        <!-- ? ===============> Order Head<=============== -->
+                            <div class="detailsHead">
+                                <div >
+                                    <span class="text-secondary">{{j.added_on}} </span><br>
+                                        <span class="text-secondary text-danger">Name:&nbsp;{{j.name}}</span>
+                                        <span class="pull-right text-danger"   style="float: right;">
+                                            {% if j.order_status|lower == 'order placed' %}
+                                                <i class="far fa-clipboard">&nbsp;{{j.order_status|upper}}</i>
+                                            {% elif j.order_status|lower == 'order accept' %}
+                                                <i class="fas fa-clipboard-check">&nbsp;{{j.order_status|upper}}</i>
+                                            {% elif j.order_status|lower == 'preparing food' %}
+                                                <i class="fas fa-pizza-slice">&nbsp;{{j.order_status|upper}}</i>
+                                            {% elif j.order_status|lower == 'ready for takeaway' %}
+                                               <i class="fas fa-box">&nbsp;{{j.order_status|upper}}</i>
+                                            {% elif j.order_status|lower == 'ready for delivery' %}
+                                                <i class="fas fa-shipping-fast">&nbsp;{{j.order_status|upper}}</i>
+                                            {% elif j.order_status|lower == 'order handed over' %}
+                                               <i class="fas fa-handshake" style="color:green">&nbsp;{{j.order_status|upper}}</i>
+                                            {% elif j.order_status|lower == 'order cancelled' %}
+                                                <i class="far fa-times-circle">&nbsp;{{j.order_status|upper}}</i>
+                                            {% endif %}
+                                        </span><br>
+                                        <span class="pull-right text-danger"  style="float: right;">Mobile No:&nbsp;{{j.username}}</span>
+                                </div>             
+                            </div>
+                             <h2 class="text-center my-2 d-flex justify-content-center">
+                                <span class="p-2 m-1 text-danger" style="border: 1px solid Red; box-shadow: 10px 10px 5px -7px rgba(57,56,56,0.75);
+-webkit-box-shadow: 10px 10px 5px -7px rgba(57,56,56,0.75);
+-moz-box-shadow: 10px 10px 5px -7px rgba(57,56,56,0.75);">Order Id: </span> 
+                                {% for n in j.id|stringformat:"i"  %}
+                                <span class="p-2 m-1 text-danger" style="border: 1px solid Red; box-shadow: 10px 10px 5px -7px rgba(57,56,56,0.75);
+-webkit-box-shadow: 10px 10px 5px -7px rgba(57,56,56,0.75);
+-moz-box-shadow: 10px 10px 5px -7px rgba(57,56,56,0.75);">{{n}}</span>  
+                                {% endfor %}
+
+
+                            </h2>
+                            <p class=" text-secondary text-center" style="font-size:12px">Note: show or tell this PIN to staff for takeaway</p>
+                            {% for i in order_item %}
+                                {% if j.id == i.order_id %}
+                                    <!-- ? ===============> Order No.Of Item<=============== -->
+                                    <div class="my-2 item">
+                                        <div class="category row">
+                                            <div class="categoryImage col-5">
+                                                <img src="/return-files/item/{{i.item_image}}" alt="" width="100%">                                
+                                            </div>
+                                            <div class=" text-center col-4 d-flex flex-column align-items-center justify-content-center">
+                                                <span><Strong>{{i.item_name}}</Strong></span>
+                                                <span><Strong>&#8377; {{i.price|sub:i.discount}}</Strong></span> 
+                                            </div>
+                                            <div class="col-3 d-flex align-items-center justify-content-center fw-bolder">
+                                                X {{i.quantity}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                            <!-- ? ===============> Order Payment area<=============== -->
+                            <div class="detailDivider"></div>                        
+                            <div class="container-fluid">
+                              <div class="row">
+                                <div class="col-12">
+                                  <div class="row">
+                                    <div class="col-6 text-center fw-bold text-danger">
+                                        Total Amount
+                                    </div>
+                                    <div class="col-6 text-center fw-bold text-danger">
+                                        <span style="text-align:right!important;">{{j.total|floatformat:2}}</span>
+                                    </div>
+                                  </div>
+                                  <div class="row">
+                                    <div class="col-6 text-center">
+                                       Tax {{j.gst}}
+                                    </div>
+                                    <div class="col-6 text-center">
+                                        <span style="text-align:right!important;">{{j.total|mul:j.gst|div:100|floatformat:2}}</span>
+                                    </div>
+                                  </div>
+                                  <div class="row">
+                                    <div class="col-6 text-center">
+                                       Service Charge
+                                    </div>
+                                    <div class="col-6 text-center">
+                                            <span style="text-align:right!important;">{{j.service_charge|floatformat:2}}</span>
+                                    </div>
+                                  </div>
+                                  <div class="row">
+                                    <div class="col-6 text-center">
+                                       Door Delivery Charge
+                                    </div>
+                                    <div class="col-6 text-center">
+                                            <span style="text-align:right!important;" id="delivery_charge">{% if j.delivery_charge == 0 %}-{% else %}{{j.delivery_charge|floatformat:2}}{% endif %}</span>
+                                    </div>
+                                  </div>
+                                  <div class="row">
+                                    <div class="col-6 text-center  text-success fw-bold">
+                                        Grand Total
+                                    </div>
+                                    <div class="col-6 text-center text-success fw-bold">
+                                            <span style="text-align:right!important; display: none;" id='grand_total_html' >{{j.grand_total|floatformat:2}}</span>
+                                            <span style="text-align:right!important;" id='grand_total' >{{j.grand_total|floatformat:2}}</span>
+                                    </div>
+
+                                    <div class="detailDivider"></div>
+
+                                  </div>        
+                                        <div class="col-12 text-center ">
+                                            <label class="mt-5s">Arrival Time:</label>
+                                            {{j.arrival_time}}<br>
+                                            What Time to delievry your prdouct or what time to collect your product
+                                        </div>
+                                      <div class="row mt-5 text-center  mx-auto" style="border: 1px solid black; width: fit-content; margin: 0px 0px 0px 0px;box-shadow: 10px 10px 5px 0px rgba(122,113,234,0.75);
+                                -webkit-box-shadow: 10px 10px 5px 0px rgba(122,113,234,0.75);
+                                -moz-box-shadow: 10px 10px 5px 0px rgba(122,113,234,0.75); ">
+                                        <div class=" text-center  col-md-12 col-sm-12 col-lg-6">
+                                          <div class="form-check form-switch">
+                                            <input class="form-check-input" type="radio"  name="delivery_type_{{j.id}}" 
+                                            {% if j.delivery_type == 'door_delivery' %}checked=""{% endif %} value="door_delivery" disabled="">
+                                            <label class="form-check-label" for="delievrytype_label">Door Delivery</label>
+                                          </div>
+                                        </div>
+                                        <div class=" text-center col-md-12 col-sm-12 col-lg-6">
+                                          <div class="form-check form-switch">
+                                            <input class="form-check-input" type="radio"  name="delivery_type_{{j.id}}" {% if j.delivery_type == 'take_away' %} checked="" {% endif %} value="take_away" disabled="">
+                                            <label class="form-check-label" for="delievrytype_label">Take Away</label>
+                                          </div>
+                                        </div>
+                                       
+                                      </div><br>
+                                       <h2 class="text-center my-2 d-flex justify-content-center">
+                                                
+                                                <span class="p-2 m-1 text-danger" style="border: 1px solid Red; box-shadow: 10px 10px 5px -7px rgba(57,56,56,0.75);
+                -webkit-box-shadow: 10px 10px 5px -7px rgba(57,56,56,0.75);
+                -moz-box-shadow: 10px 10px 5px -7px rgba(57,56,56,0.75);">{{j.payment_mode|upper}} PAYMENT</span>
+
+                {% if j.order_status|lower == 'order handed over' %}
+                    <span class="p-2 m-1 text-warning" style="border: 1px solid yellow; box-shadow: 10px 10px 5px -7px rgba(57,56,56,0.75);
+                    -webkit-box-shadow: 10px 10px 5px -7px rgba(57,56,56,0.75);
+                    -moz-box-shadow: 10px 10px 5px -7px rgba(57,56,56,0.75);">ORDER HANDOVER</span> 
+
+                {% elif j.order_status|lower == 'order cancelled' %}
+                     <span class="p-2 m-1 text-danger" style="border: 1px solid Red; box-shadow: 10px 10px 5px -7px rgba(57,56,56,0.75);
+                    -webkit-box-shadow: 10px 10px 5px -7px rgba(57,56,56,0.75);
+                    -moz-box-shadow: 10px 10px 5px -7px rgba(57,56,56,0.75);">CANCELLED</span>
+                    
+                {% endif %}
+                                            </h2>   
+                                        
+                                        
+                                        <div class=" my-2 p-2 col-12 mx-auto d-flex justify-content-between">
+                                             {% if j.order_status|lower == 'order handed over' or j.order_status|lower == 'order cancelled'  %}
+
+                                             {% else %}
+                                                    <a href="/cancel_order/{{j.id}}"><button style="margin: 0px 0px 0px 10px;height:70px;" type="button" class="btn btn-danger">Cancel Order</button></a>
+                                            {% endif %}
+                                            <div id="status_button_{{j.id}}">
+                                                    {% if j.order_status|lower == 'order placed' %}
+                                                        <button class="btn btn-success today_order_ " type_="order_status_update" updatefield="order accept" my_id="{{j.id}}" style="margin: 0px 0px 0px 10px;height:70px;"> Order Accept</button>
+                                                    {% elif j.order_status|lower == 'order accept' %}
+                                                        <button class="btn btn-success today_order_ " type_="order_status_update" updatefield="preparing food" my_id="{{j.id}}" style="margin: 0px 0px 0px 10px;height:70px;">Preparing Food</button>
+                                                    {% elif j.order_status|lower == 'preparing food' %}
+                                                        <button class="btn btn-success today_order_ " type_="order_status_update" updatefield="{% if j.delivery_type == 'door_delivery' %}ready for delivery{% else %}ready for takeaway{% endif %}" my_id="{{j.id}}" style="margin: 0px 0px 0px 10px;height: 70px;"> {% if j.delivery_type == 'door_delivery' %}Ready For delivery{% else %}Read For Take away{% endif %} </button>
+                                                    {% elif j.order_status|lower == 'ready for takeaway' %}
+                                                       <a href="/otp/{{j.id}}"><button class="btn btn-success" style="margin: 0px 0px 0px 10px;height:70px;"> Ready For Delivery </button></a>
+                                                    {% elif j.order_status|lower == 'ready for delivery' %}
+                                                        <a href="/otp/{{j.id}}"><button class="btn btn-success" style="margin: 0px 0px 0px 10px;height:70px;"> Order Handover </button></a> 
+                                                    {% endif %}   
+                                            </div>
+                                        </div>
+                                        <br>
+
+                                </div>
+                              </div>
+                            </div>
+
+                                                   
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+  
+
+{% endfor %}
+        <style type="text/css">
+    .rs-btn{
+        width: 300px;
+    }
+@media only screen and (max-width: 600px) {
+  .rs-btn{
+    width:100px;
+
+  }
+}
+</style>
+<script type="text/javascript">
+      // $(document).ready(function() {
+          $(document).on('click','.today_order_',function() {
+                // alert('pass')
+              var type_ = $(this).attr('type_')
+              var updatefield = $(this).attr('updatefield')
+              var  my_id= $(this).attr('my_id')
+
+              serverSide: true,
+              // console.log(type_,updatefield,my_id)
+              $.ajax({
+                      type: "POST",
+                      url: '/today_order_call/',
+                      data:{'id': my_id,
+                              'type_':type_,
+                              'updatefield':updatefield,
+                              'csrfmiddlewaretoken': '{{ csrf_token }}'
+                                }
+                     })
+                  .done(function(data) {
+                        console.log(data)
+                      if (data['data']['message']==true)
+                      {
+                        var next_button=data['data']['next_button']
+                        // console.log(next_button)
+                        if (next_button=='hand over')
+                        {
+                            $('#status_button_'+my_id).html(`<a href="/otp/${my_id}"><button class="btn btn-success" style="margin: 0px 0px 0px 10px;height:70px;"> Order Handover </button></a>`)
+                        }
+                        else
+                        {   
+                            $('#status_button_'+my_id).html(`<button class="btn btn-success today_order_ " type_="order_status_update" updatefield="${next_button}" my_id="${my_id}" style="margin: 0px 0px 0px 10px;height:70px;"> ${next_button}</button>`)
+                        }
+                      }
+                      
+          })
+      })
+      // });
+    </script>
+
+<script type="text/javascript">
+    window.setTimeout(function () {
+  window.location.reload();
+}, 30000);
+</script>
+ 
+<!-- ------------------------------------------------ Empty data screen -------------------------------- -->
+  
+
+
+
+
+      {% endblock %}

@@ -1,0 +1,663 @@
+
+{% load mathfilters %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta http-equiv="Content-Language" content="en" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>
+      Analytics Dashboard - This is an example dashboard created using build-in
+      elements and components.
+    </title>
+     
+     <!-- ---------------------------------------------------------------------- Toaster css ------------------------------------ -->
+      <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+        
+        
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no"
+    />
+    <meta
+      name="description"
+      content="This is an example dashboard created using build-in elements and components."
+    />
+    <meta name="msapplication-tap-highlight" content="no" />
+
+
+    <!--
+    =========================================================
+    * ArchitectUI HTML Theme Dashboard - v1.0.0
+    =========================================================
+    * Product Page: https://dashboardpack.com
+    * Copyright 2019 DashboardPack (https://dashboardpack.com)
+    * Licensed under MIT (https://github.com/DashboardPack/architectui-html-theme-free/blob/master/LICENSE)
+    =========================================================
+    * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+    -->
+    <link href="/static/client_theme/main.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/static/client_theme/css/index.css">
+    <!-- * Bootstrap v-5.0 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <!-- ------------------------ bootstrap css animation ------------------------------- -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css">
+    <!-- ----------------------------- ----------------------------------------------------------------- -->
+    <!-- * Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  
+    <link rel="stylesheet" href="/static/client_theme/owlcarousel/dist/assets/owl.carousel.min.css">
+    <!-- <link rel="stylesheet" href="/static/client_theme/owlcarousel/dist/assets/owl.theme.default.min.css"> -->
+     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+     <style type="text/css">
+       .modal {
+    display: none;
+    position: fixed;
+    left: 0;
+    right: 0;
+    background-color: #fafafa;
+    padding: 0;
+    max-height: 100%;
+    width: 95%;
+    margin: auto;
+    overflow-y: auto;
+    border-radius: 2px;
+    will-change: top, opacity;
+}
+     </style>
+
+  </head>
+  <body >
+
+       <!-- ? Modal -->
+  <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true" >
+      
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="staticBackdropLabel">Search Food</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
+        </div>
+        <style type="text/css">input 
+        {
+          text-align: center;
+        }
+
+        ::-webkit-input-placeholder {
+          text-align: center;
+        }
+
+        :-moz-placeholder {
+          text-align: center;
+        }
+
+        </style>
+        <div style="margin-bottom: 30px; margin-top: 30px border: 2px solid gray; text-decoration: none; box-shadow: 10px 10px 5px 0px rgba(125,125,125,0.75);
+-webkit-box-shadow: 10px 10px 5px 0px rgba(125,125,125,0.75);
+-moz-box-shadow: 10px 10px 5px 0px rgba(125,125,125,0.75);" class="input-group mt-5 bg-white flex-nowrap">
+  <span class="input-group-text bd-white" id="addon-wrapping"><i class="fas fa-search" style="color:green"></i></span>
+  <input id="search_bar" style="caret-color: green;" type="text" class="form-control" placeholder="Search" aria-label="Username" aria-describedby="addon-wrapping">
+</div>
+        <div class="modal-body">
+   
+        </div>
+        <!-- ---------------------------------------------------- seacrch item ---------------------- -->
+        <div class="modal-foote pb-2 " id="search_item">
+            <div class="card p-3 col-10 mx-auto">
+                <div class="card-img text-center">
+                    <img src="/return-files/others/dog.jpg" alt="" height="100px" width="90%">
+                </div>
+                
+              <button class="btn btn-info" >Search Item</button>
+            </div> 
+        
+        </div>
+
+  <script type="text/javascript">
+     
+          $(document).on('keyup',"#search_bar",function() {
+              var item_name = $(this).val()
+              // console.log(item_names)
+              serverSide: true,
+              // console.log(my_data)
+              $.ajax({
+                      type: "POST",
+                      url: '/search/',
+                      data:{'item_name': item_name,
+                              'csrfmiddlewaretoken': '{{ csrf_token }}'
+                                }
+                     })
+                  .done(function(data) {
+                      // console.log(data)
+                      cart_list=data['data']['cart_list']
+
+                      if (data['data']==false)
+                      {
+                        search_html=`<div class="card p-3 col-10 mx-auto">
+                <div class="card-img text-center">
+                    <img src="/return-files/others/dog.jpg" alt="" height="100px" width="90%">
+                </div>
+                
+              <button class="btn btn-info" >Item Not Available </button>
+            </div>`
+                      }
+                      else
+                      {
+                      item_list=data['data']['data']
+
+                      search_html=""
+                      $.each(item_list,function(index,value)
+                      {
+                        // console.log(value)
+                            let quantity=""
+                         $.each(cart_list,function(index,cart_value)
+                          {
+                            console.log('cart_item',cart_value)
+                            if (cart_value['item_id']==value['id'])
+                            {
+                              quantity=cart_value['quantity']
+                            }
+                            
+                          })
+                          discount=0
+                          try
+                            {
+                              let discount=parseInt(value['discount'])
+                            }
+                          catch
+                          {
+                            let discount=0
+
+                          }
+
+                          let price=parseInt(value['rate'])
+                          let after_discount=price-discount
+                          var discount_html=""
+                          
+                          if ((discount==0)||(discount==""))
+                          {
+                            discount_html=`<span class="d-block ">&#8377;${price}</span>`
+                          }
+                          else
+                          {
+                            discount_html=`<span class="d-block "><strike>&#8377;${price}</strike>   &#8377;${after_discount}</span>`
+                          }
+
+                          var food_cat=value['food_cat']
+
+                          if ((food_cat==0)||(food_cat==""))
+                          {
+                            food_cat_html=`<img src="/static/client_theme/assets/images/veg.png" alt="" width="16px" class="mt-2 mb-3">`
+                          }
+                          else
+                          {
+                            food_cat_html=`<img src="/static/client_theme/assets/images/non-veg.png" alt="" width="16px" class="mt-2 mb-3">`
+                          }
+
+                          search_html=search_html+`<div class="card p-3 col-10 mx-auto">
+                                      <div class="card-img text-center">
+                                          <img src="/return-files/item/${value['itemimage']}" alt="" height="100px" width="90%">
+                                      </div>
+                                      <div class="img-description mt-2">
+                                          <span class="d-block food-descreption">${value['itemname']}</span>
+                                          ${discount_html}
+                                          <div class="d-flex justify-content-between">   
+                                          <div><span class="food-price text-danger d-inline ps-2">
+                                             ${food_cat_html}
+                                          </span></div>
+                                          <div>
+                                                <span class="search_cart_cat food-price text-danger float-end" method="add" cart_item="${value['id']}"><i class="fas fa-plus-circle mt-2"></i></span>
+                                                <span class="food-price float-end" style="color:black;">&nbsp;<span id="dishpricesearch_${value['id']}">${quantity}</span>&nbsp;</span>
+                                                <span class="search_cart_cat click_but food-price text-success float-end" style="display:''" id="sub_${value['id']}"  method="sub"  cart_item="${value['id']}"><i class="fas fa-minus-circle mt-2"></i></span>
+                                                </div>
+                                            </div>
+                                      </div>
+                                    <button class="btn btn-danger">ADD CART</button>
+                                  </div> `
+                        })
+
+                      }
+                    $('#search_item').html(search_html)
+                  });
+          })
+  
+    </script>
+<!-- -------------------------------------------------------------------------------------------------------------- -->
+      </div>
+    </div>
+  </div>
+  
+  
+    <div
+      class="
+        app-container app-theme-white
+        body-tabs-shadow
+        fixed-sidebar fixed-header
+      "
+    >
+      <div class="app-header header-shadow">
+        <!-- <div class="app-header__logo">
+          <div class="logo-src"></div>
+          <div class="header__pane ml-auto">
+            <div>
+              <button
+                type="button"
+                class="hamburger close-sidebar-btn hamburger--elastic"
+                data-class="closed-sidebar"
+              >
+                <span class="hamburger-box">
+                  <span class="hamburger-inner"></span>
+                </span>
+              </button>
+            </div>
+          </div>
+        </div> -->
+        <!-- <div class="app-header__mobile-menu">
+          <div>
+            <button
+              type="button"
+              class="hamburger hamburger--elastic mobile-toggle-nav"
+            >
+              <span class="hamburger-box">
+                <span class="hamburger-inner"></span>
+              </span>
+            </button>
+          </div>
+        </div> -->
+        <div class="app-header__menu">
+          <!-- <span>
+            <button
+              type="button"
+              class="btn-icon btn-icon-only btn btn-primary btn-sm"
+            >
+              <span class="btn-icon-wrapp">
+                <i class="fas fa-search" data-bs-toggle="modal" data-bs-target="#staticBackdrop"></i>
+              </span>
+            </button>
+            <span class="mx-3 fs-5"><i class="fas fa-bell"></i></span>
+          </span> -->
+        </div>
+       
+      </div>
+
+
+      <div class="app-main">
+        
+
+ <style>
+     form, input, select, p {
+      padding: 0;
+      margin: 0;
+      outline: none;
+      font-family: Roboto, Arial, sans-serif;
+      font-size: 14px;
+      color: #666;
+      width: 100px;
+      }
+      h1 {
+      margin: 0;
+      font-weight: 400;
+      }
+      h3 {
+      margin: 12px 0;
+      color: #8ebf42;
+      }
+      .main-block {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #fff;
+      }
+      form {
+      width: 100%;
+      padding: 20px;
+      }
+      fieldset {
+      border: none;
+      border-top: 1px solid #8ebf42;
+      }
+      .account-details, .personal-details {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      }
+      .account-details >div, .personal-details >div >div {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+      }
+      .account-details >div, .personal-details >div, input, label {
+      width: 100%;
+      }
+      label {
+      padding: 0 5px;
+      text-align: right;
+      vertical-align: middle;
+      }
+      input {
+      padding: 5px;
+      vertical-align: middle;
+      }
+      
+      .pay {
+      width: 100%;
+      padding: 10px 0;
+      margin: 10px auto;
+      border-radius: 5px;
+      border: none;
+      /*background: #8ebf42;*/
+      font-size: 14px;
+      font-weight: 600;
+      color: #fff;
+      }
+      .pay:hover {
+      background:gray;
+      }
+      @media (min-width: 568px) {
+      .account-details >div, .personal-details >div {
+      width: 50%;
+      }
+
+      }
+      .razorpay-payment-button{
+        display: none;
+      }
+      @media screen and (max-width: 800px){
+        
+        #payment{
+              
+              width: 214px;
+              /*padding-right: 200px;*/
+        }
+    </style>
+  
+    {% for j in order %}
+
+    <!-- <div class="app-main__outer"> -->
+         <!-- ! App inner main here -->
+        <div class="myAppCenter p-3" >
+            <!-- ? ===============> Order Details <=============== -->
+            <div class="orderDetailsWrapper">
+                <div class="row  justify-content-center  ">
+                    <div class="col-10 col-md-10 mx-auto d-flex justify-content-center flex-column">
+                        <!-- ? ===============> Order Item<=============== -->
+                        <div class="row card p-1 brdr-radius-5 mb-3" data-aos="fade-up">
+                        <!-- ? ===============> Order Head<=============== -->
+                            <div class="detailsHead">
+                                <div >
+                                    <span class="text-secondary">{{j.added_on}} </span>
+                                        <span class="pull-right text-danger">
+                                            {% if j.order_status|lower == 'order placed' %}
+                                                <i class="far fa-clipboard">&nbsp;{{j.order_status|upper}}</i>
+                                            {% elif j.order_status|lower == 'order accept' %}
+                                                <i class="fas fa-clipboard-check">&nbsp;{{j.order_status|upper}}</i>
+                                            {% elif j.order_status|lower == 'preparing food' %}
+                                                <i class="fas fa-pizza-slice">&nbsp;{{j.order_status|upper}}</i>
+                                            {% elif j.order_status|lower == 'ready for takeaway' %}
+                                               <i class="fas fa-box">&nbsp;{{j.order_status|upper}}</i>
+                                            {% elif j.order_status|lower == 'ready for delivery' %}
+                                                <i class="fas fa-shipping-fast">&nbsp;{{j.order_status|upper}}</i>
+                                            {% elif j.order_status|lower == 'order handed over' %}
+                                               <i class="fas fa-handshake" style="color:green">&nbsp;{{j.order_status|upper}}</i>
+                                            {% elif j.order_status|lower == 'order cancelled' %}
+                                                <i class="far fa-times-circle">&nbsp;{{j.order_status|upper}}</i>
+                                            {% endif %}
+                                        </span>
+                                </div>             
+                            </div>
+                             <span class="text-danger text-center" style="font-size:25px;border: 1px solid red;box-shadow: 10px 10px 5px -7px ">ORDER ID: {{j.id}}</span><br>
+                            <h2 class="text-center my-2 d-flex justify-content-center">
+                                {% for n in j.delivery_otp|stringformat:"i"  %}
+                                <span class="p-2 m-1 text-danger" style="border: 1px solid Red; box-shadow: 10px 10px 5px -7px rgba(57,56,56,0.75);
+-webkit-box-shadow: 10px 10px 5px -7px rgba(57,56,56,0.75);
+-moz-box-shadow: 10px 10px 5px -7px rgba(57,56,56,0.75);">{{n}}</span>  
+                                {% endfor %}
+
+
+                            </h2>
+                            <p class=" text-secondary text-center" style="font-size:12px">Note: show or tell this PIN to staff for takeaway</p>
+                            {% for i in order_item %}
+                            <!-- ? ===============> Order No.Of Item<=============== -->
+                            <div class="my-2 item">
+                                <div class="category row">
+                                    <div class="categoryImage col-5">
+                                        <img src="/return-files/item/{{i.item_image}}" alt="" width="100%">                                
+                                    </div>
+                                    <div class=" text-center col-4 d-flex flex-column align-items-center justify-content-center">
+                                        <span><Strong>{{i.item_name}}</Strong></span>
+                                        <span><Strong>&#8377; {{i.price|sub:i.discount}}</Strong></span> 
+                                    </div>
+                                    <div class="col-3 d-flex align-items-center justify-content-center fw-bolder">
+                                        X {{i.order_quantity}}
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                            <!-- ? ===============> Order Payment area<=============== -->
+                            <div class="detailDivider"></div>                        
+                            <div class="container-fluid">
+                              <div class="row">
+                                <div class="col-12">
+                                  <div class="row">
+                                    <div class="col-6 text-center fw-bold text-danger">
+                                        Total Amount
+                                    </div>
+                                    <div class="col-6 text-center fw-bold text-danger">
+                                        <span style="text-align:right!important;">{{j.total|floatformat:2}}</span>
+                                    </div>
+                                  </div>
+                                  {% if j.gst != 0 %}
+
+                                  <div class="row">
+                                    <div class="col-6 text-center">
+                                       Tax {{j.gst}}
+                                    </div>
+                                    <div class="col-6 text-center">
+                                        <span style="text-align:right!important;">{{j.total|mul:j.gst|div:100|floatformat:2}}</span>
+                                    </div>
+                                  </div>
+                                  {% endif %}
+                                  <div class="row">
+                                    <div class="col-6 text-center">
+                                       Service Charge
+                                    </div>
+                                    <div class="col-6 text-center">
+                                            <span style="text-align:right!important;">{{j.service_charge|floatformat:2}}</span>
+                                    </div>
+                                  </div>
+                                  <div class="row">
+                                    <div class="col-6 text-center">
+                                       Door Delivery Charge
+                                    </div>
+                                    <div class="col-6 text-center">
+                                            <span style="text-align:right!important;" id="delivery_charge">{% if j.delivery_charge == 0 %}-{% else %}{{j.delivery_charge|floatformat:2}}{% endif %}</span>
+                                    </div>
+                                  </div>
+                                  {% if j.offer_percentage_amount != 0 %}
+                                  <div class="row">
+                                    <div class="col-6 text-center">
+                                       Special Discount
+                                    </div>
+                                    <div class="col-6 text-center">
+                                            <span style="text-align:right!important;" id="offer_percentage_amount">{{j.offer_percentage_amount|floatformat:2}}</span>
+                                    </div>
+                                  </div>
+                                  {% endif %}
+                                  <div class="row">
+                                    <div class="col-6 text-center  text-success fw-bold">
+                                        Grand Total
+                                    </div>
+                                    <div class="col-6 text-center text-success fw-bold">
+                                            <span style="text-align:right!important; display: none;" id='grand_total_html' >{{j.grand_total|floatformat:2}}</span>
+                                            <span style="text-align:right!important;" id='grand_total' >{{j.grand_total|floatformat:2}}</span>
+                                    </div>
+
+                                    <div class="detailDivider"></div>
+
+                                  </div>        
+                                        <div class="col-12 text-center ">
+                                            <label class="mt-5s">Arrival Time:</label>
+                                            {{j.arrival_time}}<br>
+                                            Our Delivery Time or Your Arrival Time
+                                        </div>
+                                      <div class="row mt-5 text-center  mx-auto" style="border: 1px solid black; width: fit-content; margin: 0px 0px 0px 0px;box-shadow: 10px 10px 5px 0px rgba(122,113,234,0.75);
+                                -webkit-box-shadow: 10px 10px 5px 0px rgba(122,113,234,0.75);
+                                -moz-box-shadow: 10px 10px 5px 0px rgba(122,113,234,0.75); ">
+                                        <div class=" text-center  col-md-12 col-sm-12 col-lg-6">
+                                          <div class="form-check form-switch">
+                                            <input class="form-check-input" type="radio"  name="delivery_type" 
+                                            {% if j.delivery_type == 'door_delivery' %}checked=""{% endif %} value="door_delivery" disabled="">
+                                            <label class="form-check-label" for="delievrytype_label">Door Delivery</label>
+                                          </div>
+                                        </div>
+                                        <div class=" text-center col-md-12 col-sm-12 col-lg-6">
+                                          <div class="form-check form-switch">
+                                            <input class="form-check-input" type="radio"  name="delivery_type" {% if j.delivery_type == 'take_away' %} checked="" {% endif %} value="take_away" disabled="">
+                                            <label class="form-check-label" for="delievrytype_label">Take Away</label>
+                                          </div>
+                                        </div>
+                                       
+                                      </div>
+
+                                      <div class="row mt-5 text-center  mx-auto" style="border: 1px solid black; width: fit-content; margin: 0px 0px 0px 0px;box-shadow: 10px 10px 5px 0px rgba(122,113,234,0.75);
+                                -webkit-box-shadow: 10px 10px 5px 0px rgba(122,113,234,0.75);
+                                -moz-box-shadow: 10px 10px 5px 0px rgba(122,113,234,0.75); ">
+                                       {% if j.delivery_type|lower == 'door_delivery' %}
+                                           <center><div>
+                                              <div class="form-check ">
+                                                <h3 style="color:green">Delivery Address:</h3><input type="text" class="ios-switch"  name="delivery_name" placeholder="Name:" value="{{j.delivery_name}}" readonly="" /><input type="text" class="ios-switch"  name="delivery_address" placeholder="Address" value="{{j.delivery_address}}" readonly="" /><div><div></div></div>
+                                              </div>
+                                            </div></center>
+                                        {% endif %}
+                                      </div> 
+
+                                      <br>
+                                       <h2 class="text-center my-2 d-flex justify-content-center">
+                                                
+                                                <span class="p-2 m-1 text-danger" style="border: 1px solid Red; box-shadow: 10px 10px 5px -7px rgba(57,56,56,0.75);
+                -webkit-box-shadow: 10px 10px 5px -7px rgba(57,56,56,0.75);
+                -moz-box-shadow: 10px 10px 5px -7px rgba(57,56,56,0.75);">{{j.payment_mode|upper}} PAYMENT</span> 
+
+
+                                            </h2>   
+                                        {% if j.payment_mode|upper == "CASH" %}
+                                        {% if j.order_status|lower == 'order cancelled' or j.order_status|lower == 'order handed over' %}
+                                            {% else %}
+                                         <div class="text-center">
+                                                 <button type="button" class="btn btn-success rs-btn p-1 " name="online_btn" id="rzp-button1">pay online</button>
+                                            </div>
+                                            {% endif %}
+                                        {% endif %}
+                                       <!--  <div class="row p-4 my-4 col-md-10 mx-auto">
+                                            <div class="col-12">
+                                                <center><a href="/track_order/{{j.id}}"><button class="btn btn-danger rs-btn p-2" style="height: 60px;"> Track Order</button></a></center>
+                                            </div>
+                                        </div> --><br>
+
+
+                                         <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+                                                <script type="text/javascript">
+                                                    // console.log('{{call_url}}online/')
+                                                    var re_url='{{call_url}}'
+                                                    var options = {
+                                                        "key": "{{raz_key}}", // Enter the Key ID generated from the Dashboard
+                                                        "amount": {{price}}, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+                                                        "currency": '{{currency}}',
+                                                        "name": "Aibeing",
+                                                        "image": "https://example.com/your_logo",
+                                                        "order_id":'{{order_id}}',
+                                                        "callback_method":'POST',
+                                                        "callback_url": '{{call_url}}',
+                                                        "redirect": true,
+                                                        "prefill":{
+                                                            "name":'{{name}}',
+                                                            "email":'thamaraikani69@gmail.com',
+                                                            "contact":{{phone}}
+                                                        },
+                                                        "theme": {
+                                                                "color": "#3399cc"
+                                                            }
+                                                    };
+                                                    // console.log(re_url)
+                                                    var rzp1 = new Razorpay(options);
+                                                    rzp1.on('payment.failed', function (response)
+                                                    { 
+
+                                                        null
+                                                        // alert(response.error.code);
+                                                        // alert(response.error.description);
+                                                        // alert(response.error.source);
+                                                        // alert(response.error.step);
+                                                        // alert(response.error.reason);
+                                                        // alert(response.error.metadata.order_id);
+                                                        // alert(response.error.metadata.payment_id);
+                                                           
+                                                    });
+
+
+                                                    document.getElementById('rzp-button1').onclick = function(e){
+                                                        rzp1.open();
+                                                        e.preventDefault();
+                                                    }
+                                                </script>
+                                            <input type="hidden" custom="Hidden Element" name="hidden">                                                                    
+
+                                </div>
+                              </div>
+                            </div>
+
+                                                   
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <style type="text/css">
+    .rs-btn{
+        width: 300px;
+    }
+@media only screen and (max-width: 600px) {
+  .rs-btn{
+    width:100px;
+
+  }
+}
+</style>
+
+{% endfor %}
+   <!-- ? ===============> Footer <=============== -->
+            <div  class="app-wrapper-footer ">
+                <div class="app-footer">
+              
+                </div>
+            </div>
+            <script src="http://maps.google.com/maps/api/js?sensor=true"></script>
+        </div>
+    </div>
+    
+      
+   
+    <script src="/static/client_theme/owlcarousel/dist/owl.carousel.min.js"></script>
+
+    <script type="text/javascript" src="/static/client_theme/assets/scripts/main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init();
+      </script>
+
+    </script>
+    {% include 'include/messages.html' %}
+  </body>
+</html>

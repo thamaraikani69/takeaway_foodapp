@@ -1,0 +1,110 @@
+{% extends "static_customer.html" %}
+{% block body %}
+{% load mathfilters %}
+    
+
+{% if order != None %}
+         <div class="app-main__outer">
+         <!-- ! App inner main here -->
+         <div class="myAppCenter p-3" >
+            <!-- ? ===============> Order Status<=============== -->
+            <div class="row  justify-content-center  ">
+                <div class="col-10 col-md-9 mx-auto d-flex justify-content-center flex-column">
+                    {% for i in order %}
+                  <!-- ? ===============> Order Item<=============== -->
+                    <div class="row card p-3 brdr-radius-5 mb-3" data-aos="fade-up">
+                        <a href="/order_details/{{i.id}}">
+                            <div class="card-img text-center" >
+                                <img src="/return-files/others/food_order.jpg" alt="" height="100px" width="100%" data-bs-toggle="modal" data-bs-target="#special_1">
+                            </div>
+                            <div class=" my-2 p-0 col-md-8 mx-auto" >
+                                <div class="text-secondary">
+                                    <span> {% for j in order_total_items %}{% if j.order_id == i.id %}{{j.total_items}} {% endif %}{% endfor %}items</span>
+                                    <span class="pull-right">{{i.added_on}}</span>
+                                </div>
+                                <div class="my-2">
+                                    <span class="text-danger" style="border: 1px solid white; box-shadow: rgba(57,56,56,0.75);
+                                        -webkit-box-shadow: 10px 10px 5px -7px rgba(57,56,56,0.75);
+                                        -moz-box-shadow: 10px 10px 5px -7px rgba(57,56,56,0.75);">&nbsp;
+                                            {% if i.order_status|lower == 'order placed' %}
+                                                <i class="far fa-clipboard">&nbsp;{{i.order_status|upper}}</i>&nbsp;
+                                            {% elif i.order_status|lower == 'order accept' %}
+                                                <i class="fas fa-clipboard-check">&nbsp;{{i.order_status|upper}}</i>&nbsp;
+                                            {% elif i.order_status|lower == 'preparing food' %}
+                                                <i class="fas fa-pizza-slice">&nbsp;{{i.order_status|upper}}</i>&nbsp;
+                                            {% elif i.order_status|lower == 'ready for takeaway' %}
+                                               <i class="fas fa-box" style="width:50%">&nbsp;{{i.order_status|upper}}</i>&nbsp;
+                                            {% elif i.order_status|lower == 'ready for delivery' %}
+                                                <i class="fas fa-shipping-fast" style="width:50%">&nbsp;{{i.order_status|upper}}</i>&nbsp;
+                                            {% elif i.order_status|lower == 'order handed over' %}
+                                               <i class="fas fa-handshake" style="color:green;width:50%">&nbsp;{{i.order_status|upper}}</i>&nbsp;
+                                            {% elif i.order_status|lower == 'order cancelled' %}
+                                                <i class="far fa-times-circle">&nbsp;{{i.order_status|upper}}</i>&nbsp;
+                                            {% endif %}
+                                        </span>                                        <!-- {{i.delivery_otp}} -->
+                                        <div class="pull-right">
+
+                                            <span class="text-danger"  style="border: 1px solid Red; box-shadow:rgba(57,56,56,0.75);
+-webkit-box-shadow: 10px 10px 5px -7px rgba(57,56,56,0.75);
+-moz-box-shadow: 10px 10px 5px -7px rgba(57,56,56,0.75);">ORDER ID: {{i.id}}</span><br><br>
+                                        {% for n in i.delivery_otp|stringformat:"i"  %}
+                                                                        <span class=" text-danger" style="border: 1px solid red; box-shadow: rgba(57,56,56,0.75);
+                                        -webkit-box-shadow: 10px 10px 5px -7px rgba(57,56,56,0.75);
+                                        -moz-box-shadow: 10px 10px 5px -7px rgba(57,56,56,0.75);">&nbsp;{{n}}&nbsp;</span>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                        <br>   <span class="text-danger" style="border: 1px solid white; box-shadow: 10px 50px 5px -7px rgba(57,56,56,0.75);
+                                        -webkit-box-shadow: 10px 10px 5px -7px rgba(57,56,56,0.75);
+                                        -moz-box-shadow: 10px 10px 5px -7px rgba(57,56,56,0.75);">&nbsp;OTP:&nbsp;</span>
+                            </div>
+                        </a>
+                        <div class=" my-2 p-2 col-8 mx-auto d-flex justify-content-between">
+                             <a href="/order_details/{{i.id}}"><button style="margin: 0px 10px 0px 0px;height: 50px;" type="button" class="btn btn-danger ">Order Details</button></a>
+                            <a href="/track_order/{{i.id}}"><button style="margin: 0px 0px 0px 10px;height: 50px;" type="button" class="btn btn-danger">Track Order</button></a>
+                          <!--  <div class="btn btn-danger col-4" style="width: 250px;">Order Details</div></a>
+                            <div class="btn btn-danger col-4 pull-right">Track Order</div></a> -->
+                        </div>
+                    </div> 
+                    {% endfor %}                  
+                </div>
+            </div>
+        </div>
+         <style type="text/css">
+                            .card-img img {
+                                  border-radius: 10%;
+                                }
+                            .card {
+                                border-radius: 10%;
+                            }
+                        </style>
+
+                        {% else %}
+
+<div class="app-main__outer">
+         <!-- ! App inner main here -->
+        <div class="myAppCenter p-3" >
+            <!-- ? ===============> Empty Card <=============== -->
+            <div class="orderDetailsWrapper">
+                <div class="row  justify-content-center  ">
+                    <div class="col-10 col-md-10 mx-auto d-flex justify-content-center flex-column">
+                        <!-- ? ===============> Order Item<=============== -->
+                        <div class="row card p-1 brdr-radius-5 mb-3" data-aos="fade-up">
+                            <center><h1>Empty card</h1></center>
+                            <!-- <img src="/return-files/others/dog.jpg"> -->
+                        </div>
+                        <div class="row card p-1 brdr-radius-5 mb-3" data-aos="fade-up">
+                            <!-- <center><h1>Empty card</h1></center> -->
+                            <img src="/return-files/others/dog1.jpg">
+                        </div>
+                        <div class="row card p-1 brdr-radius-5 mb-3" data-aos="fade-up">
+                            <center><h1>Empty card</h1></center>
+                            <!-- <img src="/return-files/others/dog.jpg"> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+{% endif %}
+
+         {% endblock %}

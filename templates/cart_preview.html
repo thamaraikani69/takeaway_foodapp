@@ -1,0 +1,517 @@
+{% extends "static_customer.html" %}
+{% block body %}
+{% load mathfilters %}
+
+
+{% if cart_data != None %}
+
+
+
+<style type="text/css">
+    input[type="radio"] { 
+  position: absolute;
+  opacity: 0;
+}
+
+/* Normal Track */
+input[type="radio"].ios-switch + div {
+  vertical-align: middle;
+  width: 40px;  height: 20px;
+  border: 1px solid rgba(0,0,0,.4);
+  border-radius: 999px;
+  background-color: rgba(0, 0, 0, 0.1);
+  -webkit-transition-duration: .4s;
+  -webkit-transition-property: background-color, box-shadow;
+  box-shadow: inset 0 0 0 0px rgba(0,0,0,0.4);
+  margin: 15px 1.2em 15px 2.5em;
+}
+
+/* Checked Track (Blue) */
+input[type="radio"].ios-switch:checked + div {
+  width: 40px;
+  background-position: 0 0;
+  background-color: #3b89ec;
+  border: 1px solid #0e62cd;
+  box-shadow: inset 0 0 0 10px rgba(59,137,259,1);
+}
+
+/* Tiny Track */
+input[type="radio"].tinyswitch.ios-switch + div {
+  width: 34px;  height: 18px;
+}
+
+/* Big Track */
+input[type="radio"].bigswitch.ios-switch + div {
+  width: 50px;  height: 25px;
+}
+
+/* Green Track */
+input[type="radio"].green.ios-switch:checked + div {
+  background-color: #00e359;
+  border: 1px solid rgba(0, 162, 63,1);
+  box-shadow: inset 0 0 0 10px rgba(0,227,89,1);
+}
+
+/* Normal Knob */
+input[type="radio"].ios-switch + div > div {
+  float: left;
+  width: 18px; height: 18px;
+  border-radius: inherit;
+  background: #ffffff;
+  -webkit-transition-timing-function: cubic-bezier(.54,1.85,.5,1);
+  -webkit-transition-duration: 0.4s;
+  -webkit-transition-property: transform, background-color, box-shadow;
+  -moz-transition-timing-function: cubic-bezier(.54,1.85,.5,1);
+  -moz-transition-duration: 0.4s;
+  -moz-transition-property: transform, background-color;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3), 0px 0px 0 1px rgba(0, 0, 0, 0.4);
+  pointer-events: none;
+  margin-top: 1px;
+  margin-left: 1px;
+}
+
+/* Checked Knob (Blue Style) */
+input[type="radio"].ios-switch:checked + div > div {
+  -webkit-transform: translate3d(20px, 0, 0);
+  -moz-transform: translate3d(20px, 0, 0);
+  background-color: #ffffff;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3), 0px 0px 0 1px rgba(8, 80, 172,1);
+}
+
+/* Tiny Knob */
+input[type="radio"].tinyswitch.ios-switch + div > div {
+  width: 16px; height: 16px;
+  margin-top: 1px;
+}
+
+/* Checked Tiny Knob (Blue Style) */
+input[type="radio"].tinyswitch.ios-switch:checked + div > div {
+  -webkit-transform: translate3d(16px, 0, 0);
+  -moz-transform: translate3d(16px, 0, 0);
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3), 0px 0px 0 1px rgba(8, 80, 172,1);
+}
+
+/* Big Knob */
+input[type="radio"].bigswitch.ios-switch + div > div {
+  width: 23px; height: 23px;
+  margin-top: 1px;
+}
+
+/* Checked Big Knob (Blue Style) */
+input[type="radio"].bigswitch.ios-switch:checked + div > div {
+  -webkit-transform: translate3d(25px, 0, 0);
+  -moz-transform: translate3d(16px, 0, 0);
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3), 0px 0px 0 1px rgba(8, 80, 172,1);
+}
+
+/* Green Knob */
+input[type="radio"].green.ios-switch:checked + div > div {
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(0, 162, 63,1);
+}
+
+</style>
+
+
+ <style>
+     form, input, select, p {
+      padding: 0;
+      margin: 0;
+      outline: none;
+      font-family: Roboto, Arial, sans-serif;
+      font-size: 14px;
+      color: #666;
+      width: 100px;
+      }
+      h1 {
+      margin: 0;
+      font-weight: 400;
+      }
+      h3 {
+      margin: 12px 0;
+      color: #8ebf42;
+      }
+      .main-block {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #fff;
+      }
+      form {
+      width: 100%;
+      padding: 20px;
+      }
+      fieldset {
+      border: none;
+      border-top: 1px solid #8ebf42;
+      }
+      .account-details, .personal-details {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      }
+      .account-details >div, .personal-details >div >div {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+      }
+      .account-details >div, .personal-details >div, input, label {
+      width: 100%;
+      }
+      label {
+      padding: 0 5px;
+      text-align: right;
+      vertical-align: middle;
+      }
+      input {
+      padding: 5px;
+      vertical-align: middle;
+      }
+      
+      .pay {
+      width: 100%;
+      padding: 10px 0;
+      margin: 10px auto;
+      border-radius: 5px;
+      border: none;
+      /*background: #8ebf42;*/
+      font-size: 14px;
+      font-weight: 600;
+      color: #fff;
+      }
+      .pay:hover {
+      background:gray;
+      }
+      @media (min-width: 568px) {
+      .account-details >div, .personal-details >div {
+      width: 50%;
+      }
+
+      }
+      .razorpay-payment-button{
+        display: none;
+      }
+      @media screen and (max-width: 800px){
+        
+        #payment{
+              
+              width: 214px;
+              /*padding-right: 200px;*/
+        }
+    </style>
+  
+    <div class="app-main__outer">
+         <!-- ! App inner main here -->
+        <div class="myAppCenter p-3" >
+            
+            <div class="orderDetailsWrapper">
+                <div class="row  justify-content-center  ">
+                    <div class="col-10 col-md-10 mx-auto d-flex justify-content-center flex-column">
+                        
+                        <div class="row card p-1 brdr-radius-5 mb-3" data-aos="fade-up">
+                        
+                            <div class="detailsHead">
+                                <div >
+                                    <!-- <span class="text-secondary" >14-09-21 2.04Pm </span> -->
+                                    <span class="pull-right text-danger"><i class="far fa-clipboard"></i> Cart </span>
+                                </div>             
+                            </div>
+                            
+                            <!-- /<p class=" text-secondary text-center" style="font-size:12px">Note: show or tell this PIN to staff for takeaway</p> -->
+                            {% for i in cartitem_data %}
+                            
+                            <div class="my-2 item">
+                                <div class="category row">
+                                    <div class="categoryImage col-5">
+                                        <img src="/return-files/item/{{i.item_image}}" alt="" width="100%">                                
+                                    </div>
+                                    <div class=" text-center col-4 d-flex flex-column align-items-center justify-content-center">
+                                        <span><Strong>{{i.item_name}}</Strong></span>
+                                        <span><Strong>&#8377; {{i.price}}</Strong></span> 
+                                    </div>
+                                    <div class="col-3 d-flex align-items-center justify-content-center fw-bolder">
+                                        
+                                              <span class="food-price float-end" style="color:black;">&nbsp;<span id="dishprice_{{i.item_id}}">{{i.cart_quantity}}</span>&nbsp;</span>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                            
+                            <div class="detailDivider"></div>
+                            {% for j in cart_data %}                           
+                            <div class="container-fluid">
+                              <div class="row">
+                                <div class="col-12">
+                                  <div class="row">
+                                    <div class="col-6 text-center fw-bold text-danger">
+                                        Total Amount
+                                    </div>
+                                    <div class="col-6 text-center fw-bold text-danger">
+                                        <span style="text-align:right!important;" id="total_html">{{j.total|floatformat:2}}</span>
+                                    </div>
+                                  </div>
+                                  {% if j.gst != 0 %}
+                                  <div class="row">
+                                    <div class="col-6 text-center">
+                                       Tax {{j.gst}}
+                                    </div>
+                                    <div class="col-6 text-center">
+                                        <span style="text-align:right!important;" id="gst_html">{{j.total|mul:j.gst|div:100|floatformat:2}}</span>
+                                    </div>
+                                  </div>
+                                  {% endif %}
+                                  <div class="row">
+                                    <div class="col-6 text-center">
+                                       Service Charge
+                                    </div>
+                                    <div class="col-6 text-center">
+                                            <span style="text-align:right!important;" id="service_charge">{{j.service_charge|floatformat:2}}</span>
+                                    </div>
+                                  </div>
+                                  <div class="row">
+                                    <div class="col-6 text-center">
+                                       Door Delivery Charge
+                                    </div>
+                                    <div class="col-6 text-center">
+                                            <span style="text-align:right!important;" id="delivery_charge">{% if j.delivery_charge == 0 %}-{% else %}{{j.delivery_charge|floatformat:2}}{% endif %}</span>
+                                    </div>
+                                  </div>
+                                    {% if j.offer_percentage_amount != 0 %}
+                                  <div class="row">
+                                    <div class="col-6 text-center">
+                                       Special Discount
+                                    </div>
+                                    <div class="col-6 text-center">
+                                            <span style="text-align:right!important;" id="offer_percentage_amount">{{j.offer_percentage_amount|floatformat:2}}</span>
+                                    </div>
+                                  </div>
+                                  {% endif %}
+                                  <div class="row">
+                                    <div class="col-6 text-center  text-success fw-bold">
+                                        Grand Total
+                                    </div>
+                                    <div class="col-6 text-center text-success fw-bold">
+                                            <span style="text-align:right!important; display: none;" id='grand_total_html' >{{j.grand_total|floatformat:2}}</span>
+                                            <span style="text-align:right!important;" id='grand_total' >{{j.grand_total|floatformat:2}}</span>
+                                    </div>
+
+                                    <div class="detailDivider"></div>
+
+                                  </div>                    
+                                  
+                                          <center>
+                                                <div class="col-6 text-center ">
+                                                    <label class="mt-5s">Arrival Time:</label>
+                                                    <input type="time" name="arrival_time" value="{{j.arrival_time}}" class="text-center" readonly="" ><br>
+                                                </div>Our Delivery Time or Your Arrival Time
+                                            </center>   
+
+                                       <div class="row mt-5 text-center  mx-auto" style="padding-right:35px;border: 1px solid black; width: fit-content; margin: 0px 0px 0px 0px;box-shadow: 10px 10px 5px 0px rgba(122,113,234,0.75);
+                                -webkit-box-shadow: 10px 10px 5px 0px rgba(122,113,234,0.75);
+                                -moz-box-shadow: 10px 10px 5px 0px rgba(122,113,234,0.75); ">
+                                        <center><div class=" text-center  col-md-12 col-sm-12 col-lg-6">
+                                          <div class="form-check form-switch">
+                                            <!-- {{j}} -->
+                                            <input class="form-check-input" type="radio"  name="delivery_type" 
+                                            {% if j.delivery_type|lower == 'door_delivery' %}checked=""{% endif %} value="door_delivery" disabled="">
+                                            <label class="form-check-label" for="delievrytype_label">{% if j.delivery_type|lower == 'door_delivery' %}<p style="color:red;font-weight: bold;">Door Delivery</p>{% else %}<p>Door Delivery{% endif %}</p></label>
+                                          </div>
+                                        </div>
+                                        <div class=" text-center col-md-12 col-sm-12 col-lg-6">
+                                          <div class="form-check form-switch">
+                                            <input class="form-check-input" type="radio"  name="delivery_type" {% if j.delivery_type|lower == 'take_away' %} checked="" {% endif %} value="take_away" disabled="">
+                                            <label class="form-check-label" for="delievrytype_label">{% if j.delivery_type|lower == 'take_away' %}<p style="color:red;font-weight: bold;">Take Away</p>{% else %}<p>Take Away{% endif %}</p></label>
+                                          </div>
+                                        </div>
+                                      </div>  </center>
+
+                                       <div class="row mt-5 text-center  mx-auto" style="border: 1px solid black; width: fit-content; margin: 0px 0px 0px 0px;box-shadow: 10px 10px 5px 0px rgba(122,113,234,0.75);
+                                -webkit-box-shadow: 10px 10px 5px 0px rgba(122,113,234,0.75);
+                                -moz-box-shadow: 10px 10px 5px 0px rgba(122,113,234,0.75); ">
+                                       {% if j.delivery_type|lower == 'door_delivery' %}
+                                           <center><div>
+                                              <div class="form-check ">
+                                                <h3>Delivery Address:</h3><input type="text" class="ios-switch"  name="delivery_name" placeholder="Name:" value="{{j.delivery_name}}" readonly="" /><input type="text" class="ios-switch"  name="delivery_address" placeholder="Address" value="{{j.delivery_address}}" readonly="" /><div><div></div></div>
+                                              </div>
+                                            </div></center>
+                                        {% endif %}
+                                      </div> 
+                                      <form action="" method="POST">
+                                        {% csrf_token %}
+                                      <div class="row mt-5 text-center  mx-auto" style="border: 1px solid black; width: fit-content; margin: 0px 0px 0px 0px;box-shadow: 10px 10px 5px 0px rgba(122,113,234,0.75);
+                                -webkit-box-shadow: 10px 10px 5px 0px rgba(122,113,234,0.75);
+                                -moz-box-shadow: 10px 10px 5px 0px rgba(122,113,234,0.75); ">
+                                    <div class="row my-4 mx-auto">
+                                        {% if cash_pay|lower == 'on' %}
+                                            
+                                            <div class="col-6 text-start">
+                                                <button   class="btn btn-danger rs-btn p-2 " name="cash_btn"> pay cash</button>
+                                            </div><br>
+                                        {% endif %}
+                                        {% if online_pay|lower == 'on' %}
+                                             <div class="col-6 text-end">
+                                                 <button type="button"  class="btn btn-success rs-btn p-1 " name="online_btn" id="rzp-button1">pay online</button>
+                                            </div>
+                                        {% endif %}
+                                        
+
+                                             <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+                                                <script type="text/javascript">
+                                                    console.log('{{call_url}}online/')
+                                                    var re_url='{{call_url}}'
+                                                    var options = {
+                                                        "key": "{{raz_key}}", // Enter the Key ID generated from the Dashboard
+                                                        "amount": {{price}}, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+                                                        "currency": '{{currency}}',
+                                                        "name": "Aibeing",
+                                                        "image": "https://example.com/your_logo",
+                                                        "order_id":'{{order_id}}',
+                                                        "callback_method":'POST',
+                                                        "callback_url": '{{call_url}}',
+                                                        "redirect": true,
+                                                        "prefill":{
+                                                            "name":'{{name}}',
+                                                            "email":'thamaraikani69@gmail.com',
+                                                            "contact":{{phone}}
+                                                        },
+                                                        "theme": {
+                                                                "color": "#3399cc"
+                                                            }
+                                                    };
+                                                    // console.log(re_url)
+                                                    var rzp1 = new Razorpay(options);
+                                                    rzp1.on('payment.failed', function (response)
+                                                    {
+                                                        null
+                                                        // console.log(response.error.code);
+                                                        // console.log(response.error.description);
+                                                        // console.log(response.error.source);
+                                                        // console.log(response.error.step);
+                                                        // console.log(response.error.reason);
+                                                        // console.log(response.error.metadata.order_id);
+                                                        // console.log(response.error.metadata.payment_id);
+                                                           
+                                                    });
+
+
+                                                    document.getElementById('rzp-button1').onclick = function(e){
+                                                        rzp1.open();
+                                                        e.preventDefault();
+                                                    }
+                                                </script>
+                                            <input type="hidden" custom="Hidden Element" name="hidden">
+                                                                    
+                                       </div> 
+                                        </form>
+                                                                               
+                                    </div><br>
+                                </div>
+                              </div>
+                            </div>
+                            {% endfor %}
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    <!-- <script
+        src="https://checkout.razorpay.com/v1/checkout.js"
+        data-key="rzp_test_ZP1gxC82m6NHFp" // Enter the Key ID generated from the Dashboard
+        data-amount= " {{price}}"// Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+        data-currency="{{currency}}"
+        data-order_id="{{order_id}}"
+        data-name="aibeing"
+        data-description="{{notes}}"
+        data-image="https://example.com/your_logo.jpg"
+        data-prefill.name="{{name}}"
+        data-prefill.email="thamaraikani69@gmail.com"
+        data-prefill.contact="{{phone}}"
+        data-theme.color="#F37266"
+    ></script> -->
+
+       
+    <!-- <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script type="text/javascript">
+        var options = {
+            "key": "rzp_test_ZP1gxC82m6NHFp", // Enter the Key ID generated from the Dashboard
+            "amount": {{price}}, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+            "currency": '{{currency}}',
+            "name": "Aibeing",
+            "image": "https://example.com/your_logo",
+            "order_id":'{{order_id}}',
+            "callback_url": 'http://127.0.0.1:8000/cart_preview/',
+            'csrf':'{{csrf_token}}',
+            "redirect": true,
+            "prefill":{
+                "name":'{{name}}',
+                "email":'thamaraikani69@gmail.com',
+                "contact":{{phone}}
+            },
+            "theme": {
+                    "color": "#3399cc"
+                }
+        };
+
+        var rzp1 = new Razorpay(options);
+        rzp1.on('payment.failed', function (response)
+        {
+
+            alert(response.error.code);
+            alert(response.error.description);
+            alert(response.error.source);
+            alert(response.error.step);
+            alert(response.error.reason);
+            alert(response.error.metadata.order_id);
+            alert(response.error.metadata.payment_id);
+               
+        });
+
+
+        document.getElementById('rzp-button1').onclick = function(e){
+            rzp1.open();
+            e.preventDefault();
+        }
+    </script> -->
+        <style type="text/css">
+    .rs-btn{
+        width: 300px;
+    }
+@media only screen and (max-width: 600px) {
+  .rs-btn{
+    width:100px;
+
+  }
+}
+</style>
+{% else %}
+
+<div class="app-main__outer">
+         <!-- ! App inner main here -->
+        <div class="myAppCenter p-3" >
+            
+            <div class="orderDetailsWrapper">
+                <div class="row  justify-content-center  ">
+                    <div class="col-10 col-md-10 mx-auto d-flex justify-content-center flex-column">
+                        
+                        <div class="row card p-1 brdr-radius-5 mb-3" data-aos="fade-up">
+                            <center><h1>Empty card</h1></center>
+                            <!-- <img src="/return-files/others/dog.jpg"> -->
+                        </div>
+                        <div class="row card p-1 brdr-radius-5 mb-3" data-aos="fade-up">
+                            <!-- <center><h1>Empty card</h1></center> -->
+                            <img src="/return-files/others/dog1.jpg">
+                        </div>
+                        <div class="row card p-1 brdr-radius-5 mb-3" data-aos="fade-up">
+                            <center><h1>Empty card</h1></center>
+                            <!-- <img src="/return-files/others/dog.jpg"> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+{% endif %}
+
+
+      {% endblock %}

@@ -1,0 +1,84 @@
+{% extends "static_customer.html" %}
+{% block body %}
+ <style type="text/css">
+                    .modal-backdrop {
+                        z-index: 0;
+                    }
+                    .modal-content{
+                        top: 70px;
+                    }
+                    .modal-backdrop.fade{
+                        opacity: 0;
+                    }
+                </style>
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Admin profile</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form action="" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+        <div class="modal-body">
+         <label class="mt-2" for="profile pic">profile pic</label>
+         <input class="form-control" type="file" name="picture">
+         <label class="mt-2" for="user-name">Name</label>
+         <input class="form-control" type="text" name="name" value="{{name}}">
+         <label class="mt-2" for="user-name">Mobile Number:</label>
+         <input class="form-control" type="text" name="phone" value="{{username}}" readonly="">
+         <!-- <label class="mt-2" for="E-mail">E-mail</label> -->
+         <!-- <input class="form-control" type="email"> -->
+
+        </div>
+        <div class="modal-footer d-flex justify-content-between">
+          <button class="btn btn-success"><i class="far fa-save"></i> Save changes</button>
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal"><i class="far fa-times-circle"></i> Close</button>
+
+        </div>
+        </form>
+      </div>
+    </div>
+  </div>
+<!-- Modal -->
+
+         <div class="app-main__outer">
+         <!-- ! App inner main here -->
+         <div class="myAppCenter p-3" >
+             <!-- ? ===============> Account Details <=============== -->
+             <div class="accountWrapper">
+                <!-- ? ===============> Account header <=============== -->
+                 <div class="accountHeader bg-grow-early d-flex flex-column align-items-center justify-content-center">
+                    <!-- data profile edit -->
+<div class="col-12 text-center">
+<img style="height: 100px; width: 80px;" class="img-fluid rounded" src="/return-files/profile/{{profile}}" alt="">
+</div>
+<div class="col-12 text-center mt-2">
+<button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal">Edit <i class="fas fa-user-edit"></i></button>  
+</div>
+<!-- <div class="col-12 text-center mt-2">
+   <p class="text-black"> User name : venkatesh ponraj</p>
+</div>
+<div class="col-12 text-center mt-2">
+    <p class="text-black"> Email : vengatp14@gmail.com</p>
+ </div>
+ <div class="col-12 text-center mt-2">
+     <p class="text-black"> Phone-no : +91 98943 24458</p>
+ </div> -->
+<!-- data profile edit -->
+                     <!-- <div class="profile d-flex align-items-center justify-content-center"><i class="far fa-user-circle"></i></div>
+                     <div class="name">
+                        <h3 class="text-center">{{name}}</h3>
+                        <h3 class="text-center">{{username}}</h3>
+                     </div> -->
+                 </div>
+                <!-- ? ===============> Account Content <=============== -->
+                <center><div class="accountContent ps-2  my-4 row flex-column justify-content-center">
+                    <div class="content mt-2 col-md-2 mx-auto "><a href="/order"><i class="fs-3 far fa-clipboard" style="color:green;"></i> <span class="ms-2" style="color:green;">Orders</span></a></div>
+                    
+                    <div class="content my-3 col-md-2 mx-auto "><a href="/contact_us"><i class="fs-3 fas fa-question-circle" style="color:green;"></i> <span style="color:green" class="ms-2">Contact-us</span></a></div>
+                    <div class="content mb-2 col-md-2 mx-auto "><i class="fs-3 fas fa-share-alt" style="color:green"></i> <span class="ms-2" style="color:green">Share</span></div>
+                </div></center>
+             </div>
+{% endblock %}

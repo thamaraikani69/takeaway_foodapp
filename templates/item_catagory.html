@@ -1,0 +1,250 @@
+{% extends "static_customer.html" %}
+{% block body %}
+{% load mathfilters %}
+  
+  <style>
+      .owl-carousel{
+        width: 980px;
+      }
+      .owl-carousel{
+        width: 980px;
+      }
+      @media  only screen and (max-width: 980px){                      
+        .owl-carousel{
+          width: 850px;
+        }
+      }
+      @media  (min-width: 740px) and (max-width: 800px){                      
+        .owl-carousel{
+          width: 720px;
+        }
+      }
+      @media  only screen and (max-width: 500px){                      
+        .owl-carousel{
+          width: 340px;
+        }
+      }
+
+      .card-img img {
+                border-radius: 10%;
+              }
+          .card {
+              border-radius: 10%;
+          }
+          .circle_cat {
+                border-radius: 30%;
+              }
+          .circle_banner {
+                border-radius: 5%;
+                height: 350px;
+                width: 700px !important;
+              }
+
+          @media only screen and (max-width: 600px) {
+                .circle_banner{
+                  border-radius: 5%;
+                  height: 250px;
+                  width: 100% !important;
+
+                }
+              }
+    </style>  
+    <style type="text/css">
+            .scroll-area-md {
+                  height: 500px;
+                  overflow-x: hidden;
+              }
+          </style>
+    <!-- ========================================= Single Item Toggle ================================= -->
+     <style type="text/css">
+                    .modal-backdrop {
+                        z-index: 0;
+                    }
+                    .modal-content{
+                        top: 70px;
+                    }
+                    .modal-backdrop.fade{
+                        opacity: 0;
+                    }
+                </style>
+                {% for j in item_data %}
+                        <!-- ? Special Modal 1-->
+                      <div class="modal fade" id="special_{{j.id}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                          
+                        <div class="modal-dialog">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="staticBackdropLabel">Food</h5>
+                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <!-- <div class="input-group mb-2">
+                                    <span class="input-group-text" id="basic-addon1"><i class="fas fa-search"></i></span>
+                                    <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+                                  </div> -->
+                            </div>
+                            <div class="modal-footer pb-2 mb-3">
+                                <div class="card p-3 col-10 mx-auto">
+                                    <div class="card-img text-center">
+                                        <img src="/return-files/item/{{j.itemimage}}" alt="" height="100px" width="90%">
+                                    </div>
+                                    <div class="img-description mt-2">
+                                        <span class="d-block food-descreption">{{j.itemname|upper}}</span>
+                                        {% if j.discount == 0 or j.discount == "" %}
+                                            <span class="d-block ">&#8377;{{j.rate}}</span>
+                                        {% else %}
+                                            {% with discount=j.discount %}
+                                            <span class="d-block "><strike>&#8377;{{ j.rate }}</strike>   &#8377;{{ j.rate|sub:j.discount }}</span>
+                                            {% endwith %}
+                                        {% endif %}
+                                        <div class="d-flex justify-content-between">
+                                          <div>
+                                            <span class="text-start food-price text-danger d-inline ps-2">
+                                                {% if j.food_cat == 0 %}
+                                                    <img src="/static/client_theme/assets/images/veg.png" alt="" width="16px" class="mt-2  d-inline">
+                                                {% else %}
+                                                    <img src="/static/client_theme/assets/images/non-veg.png" alt="" width="16px" class="mt-2  d-inline">
+                                                {% endif %}
+                                            </span>
+                                          </div>
+                                          <div>
+                                                <span class="add_cart food-price text-danger float-end" method="add" cart_item="{{j.id}}"><i class="fas fa-plus-circle mt-2"></i></span>
+                                                <span class="food-price float-end" style="color:black;">&nbsp;
+                                                    <span id="dishpriceheader_{{j.id}}">{% for c in cartitem_data %}{% if c.item_id == j.id %}{{c.cart_quantity}}{% endif %}{% endfor %}</span>&nbsp;
+                                                  </span>
+                                                <span class="add_cart click_but food-price text-success float-end" style="display:''" id="sub_{{j.id}}"  method="sub"  cart_item="{{j.id}}"><i class="fas fa-minus-circle mt-2"></i></span>
+                                          </div>
+                                        </div>
+                                    </div>
+                                  <!-- <button class="btn btn-danger">ADD CART</button> -->
+                                </div> 
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    {% endfor %}
+                      <!-- ============================================================================= -->
+                    
+         <div class="app-main__outer">
+          
+         <!-- ! App inner main here -->
+         <div class="myAppCenter p-3" >
+             <!-- ? ===============> Category Image <=============== -->
+            <div class="categoryWarapper">
+              <!-- ? ===============> Category Banner <=============== -->
+              <div class="myBannerWrapper" >
+                <!-- ? Slider main container -->
+                <!-- Set up your HTML -->            
+                    <center><div class="owl-carousel mx-auto" id="owl-carousel">
+                        {% for i in banner_data %}
+                          <img class="circle_banner" src="/return-files/banner/{{i.banner_image}}" class="d-block w-100" alt="..." height="350px">
+                          <!-- but i need 150 in mobile -->
+                        {% endfor %}
+                    </div></center>
+                  
+            </div>  
+             <!-- ? ===============> Category Navigation <=============== -->
+              <div class="categoryNavigation">
+                <div class="scrolling-wrapper d-flex justify-content-between" id="nav-tab" role="tablist">
+                  {% for j in foodcat_data %}
+                  <div class="me-3 my-2 py-md-0 scrolls {% if j.id == id %}activeParent{% elif id == 0 or id not in foodcat_data_list %}{% if forloop.first %}activeParent{% endif %}{% endif %}" onclick="contentChange('categoryContent_{{j.id}}', this)"><strong>{{j.name}}</strong></div>
+                  {% endfor %}
+                </div>
+              </div>
+              <!-- {% if id not in foodcat_data_list %}
+                okokoko{{foodcat_data_list}}
+              {% endif %} -->
+             <!-- ? ===============> Category Content <=============== -->
+              <div class="categoryContent">    
+
+                <!-- ? ===============> Category Tabs <=============== -->
+                  {% for j in foodcat_data %}
+                    <div class="category {% if j.id == id %}activeNow{% elif id == 0 or id not in foodcat_data_list %}{% if forloop.first %}activeNow{% else %}d-none{% endif %}{% else %}d-none{% endif %}" id="categoryContent_{{j.id}}">
+                      <div class="scroll-area-md">
+                        <!-- ? category item -->
+                        {% for i in item_data %}
+                          {% if j.id == i.dish_cat %}
+                            <div class="card p-3 mb-2 col-md-8 mx-md-auto" >
+                              <div class="card-img text-center" >
+                                  <img src="/return-files/item/{{i.itemimage}}" alt="" height="150px" width="100%" data-bs-toggle="modal" data-bs-target="#special_{{i.id}}">
+                              </div>
+                              <div class="img-description mt-2">
+                                  <span class="d-block food-descreption">{{i.itemname|upper}}</span>
+                                  {% if i.discount == 0 or i.discount == "" %}
+                                      <span class="d-block ">&#8377;{{i.rate}}</span>
+                                  {% else %}
+                                      {% with discount=i.discount %}
+                                      <span class="d-block "><strike>&#8377;{{ i.rate }}</strike>   &#8377;{{ i.rate|sub:i.discount }}</span>
+                                      {% endwith %}
+                                  {% endif %}
+                                  <span class="food-price text-danger d-inline ps-2">
+                                      {% if i.food_cat == 0 %}
+                                          <img src="/static/client_theme/assets/images/veg.png" alt="" width="16px" class="mt-2  d-inline">
+                                      {% else %}
+                                          <img src="/static/client_theme/assets/images/non-veg.png" alt="" width="16px" class="mt-2 d-inline">
+                                      {% endif %}
+                                  </span>
+                                  <span class="add_cart food-price text-danger float-end" method="add" cart_item="{{i.id}}"><i class="fas fa-plus-circle mt-2"></i></span>
+                                  <span class="food-price float-end" style="color:black;">&nbsp;<span id="dishprice_{{i.id}}">{% for c in cartitem_data %}{% if c.item_id == i.id %}{{c.cart_quantity}}{% endif %}{% endfor %}</span>&nbsp;</span>
+                                  <span class="add_cart click_but food-price text-success float-end" style="display:''" id="sub_{{i.id}}"  method="sub"  cart_item="{{i.id}}"><i class="fas fa-minus-circle mt-2"></i></span>
+                              </div>
+                            </div>
+                          {% endif %}
+                        {% endfor %}
+                      </div>
+                </div>
+                {% endfor %}
+                </div>
+              </div>
+            <script>
+        $(document).ready(function(){
+            $("#owl-carousel").owlCarousel({
+                loop:true,
+                margin:10,
+                nav:false,
+                autoplay:true,
+                responsive:{
+                    0:{
+                        items:1
+                    },
+                    600:{
+                        items:1
+                    },
+                    1000:{
+                        items:1
+                    }
+                }
+            });
+            
+            $(".owl_2").owlCarousel({
+                // loop:true,
+                margin:10,
+                nav:false,
+                autoplay:true,
+                responsive:{
+                    0:{
+                        items:2
+                    },
+                    600:{
+                        items:2
+                    },
+                    1000:{
+                        items:3
+                    }
+                }
+            });
+        });
+    </script>
+ <script>
+    function contentChange (paraId, el){
+      // document.getElementsByClassName("activeNow").classList.add("d-none");
+      document.querySelector(".activeNow").classList.add("d-none");
+      document.querySelector(".activeNow").classList.remove("activeNow");
+      document.querySelector(".activeParent").classList.remove("activeParent");
+      document.getElementById(paraId).className = "category activeNow fadeInAni";
+      el.classList.add("activeParent");
+    }
+  </script>
+
+  
+{% endblock %}

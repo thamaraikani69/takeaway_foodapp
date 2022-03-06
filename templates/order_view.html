@@ -1,0 +1,215 @@
+{% extends "static_customer.html" %}
+{% block body %}
+{% load mathfilters %}
+
+
+    {% for j in order %}
+
+    <div class="app-main__outer">
+         <!-- ! App inner main here -->
+        <div class="myAppCenter p-3" >
+            <!-- ? ===============> Order Details <=============== -->
+            <div class="orderDetailsWrapper">
+                <div class="row  justify-content-center  ">
+                    <div class="col-10 col-md-10 mx-auto d-flex justify-content-center flex-column">
+                        <!-- ? ===============> Order Item<=============== -->
+                        <div class="row card p-1 brdr-radius-5 mb-3" data-aos="fade-up">
+                        <!-- ? ===============> Order Head<=============== -->
+                            <div class="detailsHead">
+                                <div >
+                                    <span class="text-secondary">{{j.added_on}} </span><br>
+                                        <span class="text-secondary text-danger">Name:&nbsp;{{j.name}}</span>
+                                        <span class="pull-right text-danger">
+                                            {% if j.order_status|lower == 'order placed' %}
+                                                <i class="far fa-clipboard">&nbsp;{{j.order_status|upper}}</i>
+                                            {% elif j.order_status|lower == 'order accept' %}
+                                                <i class="fas fa-clipboard-check">&nbsp;{{j.order_status|upper}}</i>
+                                            {% elif j.order_status|lower == 'preparing food' %}
+                                                <i class="fas fa-pizza-slice">&nbsp;{{j.order_status|upper}}</i>
+                                            {% elif j.order_status|lower == 'ready for takeaway' %}
+                                               <i class="fas fa-box">&nbsp;{{j.order_status|upper}}</i>
+                                            {% elif j.order_status|lower == 'ready for delivery' %}
+                                                <i class="fas fa-shipping-fast">&nbsp;{{j.order_status|upper}}</i>
+                                            {% elif j.order_status|lower == 'order handed over' %}
+                                               <i class="fas fa-handshake" style="color:green">&nbsp;{{j.order_status|upper}}</i>
+                                            {% elif j.order_status|lower == 'order cancelled' %}
+                                                <i class="far fa-times-circle">&nbsp;{{j.order_status|upper}}</i>
+                                            {% endif %}
+                                        </span><br>
+                                        <span class="pull-right text-danger"  style="float: right;">Mobile No:&nbsp;{{j.username}}</span>
+                                </div>             
+                            </div>
+                            <span class="text-danger text-center" style="font-size:25px;border: 1px solid red;box-shadow: 10px 10px 5px -7px ">ORDER ID: {{j.id}}</span><br>
+                            <h2 class="text-center my-2 d-flex justify-content-center">
+                                {% for n in j.delivery_otp|stringformat:"i"  %}
+                                <span class="p-2 m-1 text-danger" style="border: 1px solid Red; box-shadow: 10px 10px 5px -7px rgba(57,56,56,0.75);
+-webkit-box-shadow: 10px 10px 5px -7px rgba(57,56,56,0.75);
+-moz-box-shadow: 10px 10px 5px -7px rgba(57,56,56,0.75);">{{n}}</span>  
+                                {% endfor %}
+
+
+                            </h2>
+                            <p class=" text-secondary text-center" style="font-size:12px">Note: show or tell this PIN to staff for takeaway</p>
+                            {% for i in order_item %}
+                            <!-- ? ===============> Order No.Of Item<=============== -->
+                            <div class="my-2 item">
+                                <div class="category row">
+                                    <div class="categoryImage col-5">
+                                        <img src="/return-files/item/{{i.item_image}}" alt="" width="100%">                                
+                                    </div>
+                                    <div class=" text-center col-4 d-flex flex-column align-items-center justify-content-center">
+                                        <span><Strong>{{i.item_name}}</Strong></span>
+                                        <span><Strong>&#8377; {{i.price|sub:i.discount}}</Strong></span> 
+                                    </div>
+                                    <div class="col-3 d-flex align-items-center justify-content-center fw-bolder">
+                                        X {{i.order_quantity}}
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                            <!-- ? ===============> Order Payment area<=============== -->
+                            <div class="detailDivider"></div>                        
+                            <div class="container-fluid">
+                              <div class="row">
+                                <div class="col-12">
+                                  <div class="row">
+                                    <div class="col-6 text-center fw-bold text-danger">
+                                        Total Amount
+                                    </div>
+                                    <div class="col-6 text-center fw-bold text-danger">
+                                        <span style="text-align:right!important;">{{j.total|floatformat:2}}</span>
+                                    </div>
+                                  </div>
+                                  <div class="row">
+                                    <div class="col-6 text-center">
+                                       Tax {{j.gst}}
+                                    </div>
+                                    <div class="col-6 text-center">
+                                        <span style="text-align:right!important;">{{j.total|mul:j.gst|div:100|floatformat:2}}</span>
+                                    </div>
+                                  </div>
+                                  <div class="row">
+                                    <div class="col-6 text-center">
+                                       Service Charge
+                                    </div>
+                                    <div class="col-6 text-center">
+                                            <span style="text-align:right!important;">{{j.service_charge|floatformat:2}}</span>
+                                    </div>
+                                  </div>
+                                  <div class="row">
+                                    <div class="col-6 text-center">
+                                       Door Delivery Charge
+                                    </div>
+                                    <div class="col-6 text-center">
+                                            <span style="text-align:right!important;" id="delivery_charge">{% if j.delivery_charge == 0 %}-{% else %}{{j.delivery_charge|floatformat:2}}{% endif %}</span>
+                                    </div>
+                                  </div>
+                                  {% if j.offer_percentage_amount != 0 %}
+                                  <div class="row">
+                                    <div class="col-6 text-center">
+                                       Special Discount
+                                    </div>
+                                    <div class="col-6 text-center">
+                                            <span style="text-align:right!important;" id="offer_percentage_amount">{{j.offer_percentage_amount|floatformat:2}}</span>
+                                    </div>
+                                  </div>
+                                  {% endif %}
+                                  <div class="row">
+                                    <div class="col-6 text-center  text-success fw-bold">
+                                        Grand Total
+                                    </div>
+                                    <div class="col-6 text-center text-success fw-bold">
+                                            <span style="text-align:right!important; display: none;" id='grand_total_html' >{{j.grand_total|floatformat:2}}</span>
+                                            <span style="text-align:right!important;" id='grand_total' >{{j.grand_total|floatformat:2}}</span>
+                                    </div>
+
+                                    <div class="detailDivider"></div>
+
+                                  </div>        
+                                        <div class="col-12 text-center ">
+                                            <label class="mt-5s">Arrival Time:</label>
+                                            {{j.arrival_time}}<br>
+                                            Our Delivery Time or Your Arrival Time
+                                        </div>
+                                      <div class="row mt-5 text-center  mx-auto" style="border: 1px solid black; width: fit-content; margin: 0px 0px 0px 0px;box-shadow: 10px 10px 5px 0px rgba(122,113,234,0.75);
+                                -webkit-box-shadow: 10px 10px 5px 0px rgba(122,113,234,0.75);
+                                -moz-box-shadow: 10px 10px 5px 0px rgba(122,113,234,0.75); ">
+                                        <div class=" text-center  col-md-12 col-sm-12 col-lg-6">
+                                          <div class="form-check form-switch">
+                                            <input class="form-check-input" type="radio"  name="delivery_type" 
+                                            {% if j.delivery_type == 'door_delivery' %}checked=""{% endif %} value="door_delivery" disabled="">
+                                            <label class="form-check-label" for="delievrytype_label">Door Delivery</label>
+                                          </div>
+                                        </div>
+                                        <div class=" text-center col-md-12 col-sm-12 col-lg-6">
+                                          <div class="form-check form-switch">
+                                            <input class="form-check-input" type="radio"  name="delivery_type" {% if j.delivery_type == 'take_away' %} checked="" {% endif %} value="take_away" disabled="">
+                                            <label class="form-check-label" for="delievrytype_label">Take Away</label>
+                                          </div>
+                                        </div>
+                                       
+                                      </div><br>
+                                       <h2 class="text-center my-2 d-flex justify-content-center">
+                                                
+                                                <span class="p-2 m-1 text-danger" style="border: 1px solid Red; box-shadow: 10px 10px 5px -7px rgba(57,56,56,0.75);
+                -webkit-box-shadow: 10px 10px 5px -7px rgba(57,56,56,0.75);
+                -moz-box-shadow: 10px 10px 5px -7px rgba(57,56,56,0.75);">{{j.payment_mode|upper}} PAYMENT</span> 
+
+
+                                            </h2>   
+                                        
+                                    
+                                        <div class="row p-4 my-4 col-md-10 mx-auto">
+                                            <div class="col-12">
+                                                <center><a href="/track_order/{{j.id}}"><button class="btn btn-danger rs-btn p-2" style="height: 60px;"> Track Order</button></a></center>
+                                            </div>
+                                        </div><br>
+
+                                </div>
+                              </div>
+                            </div>
+
+                                                   
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <style type="text/css">
+    .rs-btn{
+        width: 300px;
+    }
+@media only screen and (max-width: 600px) {
+  .rs-btn{
+    width:100px;
+
+  }
+}
+</style>
+
+{% endfor %}
+<!-- ------------------------------------------------ Empty data screen -------------------------------- -->
+<!-- <div class="app-main__outer">
+        <div class="myAppCenter p-3" >
+            <div class="orderDetailsWrapper">
+                <div class="row  justify-content-center  ">
+                    <div class="col-10 col-md-10 mx-auto d-flex justify-content-center flex-column">
+                        <div class="row card p-1 brdr-radius-5 mb-3" data-aos="fade-up">
+                            <center><h1>Empty card</h1></center>
+                        </div>
+                        <div class="row card p-1 brdr-radius-5 mb-3" data-aos="fade-up">
+                            <img src="/return-files/others/dog1.jpg">
+                        </div>
+                        <div class="row card p-1 brdr-radius-5 mb-3" data-aos="fade-up">
+                            <center><h1>Empty card</h1></center>
+                        </div>
+                    </div>
+                </div>
+            </div> -->
+
+
+
+
+
+      {% endblock %}

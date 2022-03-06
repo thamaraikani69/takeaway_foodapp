@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="/static/dashboard_theme/assets/images/favicon.png">
+    <title>Adminmart Template - The Ultimate Multipurpose admin template</title>
+    <!-- This page css -->
+    <!-- Custom CSS -->
+    <link href="/static/dashboard_theme/dist/css/style.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="highlights/highlight.min.css">
+
+    <!-- ------------------------------ Jqurey cdn --------------------------------- -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.11.3/datatables.min.css"/>
+ 
+    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.11.3/datatables.min.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script> -->
+    <!-- ------------------------------------------------------------------------------ -->
+    <!-- Custom CSS -->
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+    <!-- Custom CSS -->
+
+</head>
+
+<body>
+    <!-- ============================================================== -->
+    <!-- Preloader - style you can find in spinners.css -->
+    <!-- ============================================================== -->
+    <div class="preloader">
+        <div class="lds-ripple">
+            <div class="lds-pos"></div>
+            <div class="lds-pos"></div>
+        </div>
+    </div>
+    <!-- ============================================================== -->
+    <!-- Main wrapper - style you can find in pages.scss -->
+    <!-- ============================================================== -->
+    <div id="main-wrapper" data-theme="light" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full" data-sidebar-position="fixed" data-header-position="fixed" data-boxed-layout="full">
+        <!-- ============================================================== -->
+        <!-- Topbar header - style you can find in pages.scss -->
+        <!-- ============================================================== -->
+        <header class="topbar" data-navbarbg="skin6">
+            <nav class="navbar top-navbar navbar-expand-md">
+                <div class="navbar-header" data-logobg="skin6">
+                    <!-- This is for the sidebar toggle which is visible on mobile only -->
+                    <a class="nav-toggler waves-effect waves-light d-block d-md-none" href="javascript:void(0)"><i
+                            class="ti-menu ti-close"></i></a>
+                    <!-- ============================================================== -->
+                    <!-- Logo -->
+                    <!-- ============================================================== -->
+                    <div class="navbar-brand">
+                        <!-- Logo icon -->
+                        <!-- <a href="docs.html"> -->
+                            <b class="logo-icon">
+                                <!-- Dark Logo icon -->
+                              
+                             <div class="notification">
+                                <img src="/static/dashboard_theme/assets/images/logo-icon.png" class="noti" data-toggle="modal" data-target="#myModal" style="float:right;" alt="homepage" class="dark-logo" /><span class="badge" id="noti_msg"></span>
+                            </div>
+                                <!-- Light Logo icon -->
+                                <img src="/static/dashboard_theme/assets/images/logo-icon.png" alt="homepage" class="light-logo" />
+                            </b>
+                            <!--End Logo icon -->
+                            <!-- Logo text -->
+                            <span class="logo-text">
+                                <!-- dark Logo text -->
+                                <img src="/static/dashboard_theme/assets/images/logo-text.png" alt="homepage" class="dark-logo" />
+                                <!-- Light Logo text -->
+                                <img src="/static/dashboard_theme/assets/images/logo-light-text.png" class="light-logo" alt="homepage" />
+                            </span>
+                        <!-- </a> -->
+                    </div>
+                    <!-- ============================================================== -->
+                    <!-- End Logo -->
+                    <!-- ============================================================== -->
+                    <!-- ============================================================== -->
+                    <!-- Toggle which is visible on mobile only -->
+                    <!-- ============================================================== -->
+                    <a class="topbartoggler d-block d-md-none waves-effect waves-light" href="javascript:void(0)"
+                        data-toggle="collapse" data-target="#navbarSupportedContent"
+                        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><i
+                            class="ti-more"></i></a>
+                </div>
+                <!-- ============================================================== -->
+                <!-- End Logo -->
+                <!-- ============================================================== -->
+               
+            </nav>
+        </header>
+
+
+
+        <!-- ============================================================== -->
+        <!-- End Topbar header -->
+        <!-- ============================================================== -->
+        <!-- ============================================================== -->
+        <!-- Left Sidebar - style you can find in sidebar.scss  -->
+        <!-- ============================================================== -->
+        <aside class="left-sidebar" data-sidebarbg="skin6">
+            <!-- Sidebar scroll-->
+            <div class="scroll-sidebar" data-sidebarbg="skin6">
+                <!-- Sidebar navigation-->
+                <nav class="sidebar-nav">
+                    <ul id="sidebarnav">
+                        <li class="nav-small-cap"><span class="hide-menu">Getting Started</span></li>
+                        <li class="sidebar-item"> <a class="sidebar-link sidebar-link" href="/dashboard"
+                        aria-expanded="false"><i data-feather="bar-chart-2" class="feather-icon"></i>
+                            <span class="hide-menu">Dashboard</span></a>
+                        </li>
+                        <li class="sidebar-item"> <a class="sidebar-link sidebar-link" href="/add_company"
+                        aria-expanded="false"><i data-feather="clipboard" class="feather-icon"></i>
+                            <span class="hide-menu">Company</span></a>
+                        </li>
+                        <li class="sidebar-item"> <a class="sidebar-link sidebar-link" href="/out_of_stock"
+                        aria-expanded="false"><i data-feather="clipboard" class="feather-icon"></i>
+                            <span class="hide-menu">Out Of Stock</span></a>
+                        </li>
+                        <li class="sidebar-item"> <a class="sidebar-link sidebar-link" href="/setting"
+                        aria-expanded="false"><i data-feather="clipboard" class="feather-icon"></i>
+                            <span class="hide-menu">Setting</span></a>
+                        </li>
+                        <li class="sidebar-item"> <a class="sidebar-link sidebar-link" href="/today_order"
+                        aria-expanded="false"><i data-feather="clipboard" class="feather-icon"></i>
+                            <span class="hide-menu">Today Order</span></a>
+                        </li>
+                         <li class="sidebar-item"> <a class="sidebar-link sidebar-link" href="/service_fee"
+                        aria-expanded="false"><i data-feather="clipboard" class="feather-icon"></i>
+                            <span class="hide-menu">AI-Being</span></a>
+                        </li>
+                         <li class="sidebar-item"> <a class="sidebar-link sidebar-link" href="/home"
+                        aria-expanded="false"><i data-feather="clipboard" class="feather-icon"></i>
+                            <span class="hide-menu">Home</span></a>
+                        </li>
+                        <li class="list-divider"></li>
+                        <li class="nav-small-cap"><span class="hide-menu">Item Components</span></li>
+                        <li class="sidebar-item"> <a class="sidebar-link sidebar-link" href="/banner"
+                        aria-expanded="false"><i data-feather="clipboard" class="feather-icon"></i>
+                            <span class="hide-menu">Banner</span></a>
+                        </li>
+                        <li class="sidebar-item"> <a class="sidebar-link has-arrow" href="javascript:void(0)"
+                                aria-expanded="false"><i data-feather="grid" class="feather-icon"></i><span
+                                    class="hide-menu">Item
+                                </span></a>
+
+                            <ul aria-expanded="false" class="collapse  first-level base-level-line">
+                                <li class="sidebar-item"><a href="/item" class="sidebar-link"><span class="hide-menu"> Item </span></a></li>
+                                <li class="sidebar-item"><a href="/catagory" class="sidebar-link"><span class="hide-menu"> catagory </span></a></li>
+                                <li class="sidebar-item"><a href="/list_catagory" class="sidebar-link"><span class="hide-menu"> ADD Items In Catagory </span></a></li>
+                                <li class="sidebar-item"><a href="/food_catagory" class="sidebar-link"><span class="hide-menu"> Food Catagory </span></a></li>
+                            </ul>
+                        </li>
+                        <li class="sidebar-item"> <a class="sidebar-link has-arrow" href="javascript:void(0)"
+                                aria-expanded="false"><i data-feather="edit" class="feather-icon"></i><span
+                                    class="hide-menu">Report
+                                </span></a>
+                            <ul aria-expanded="false" class="collapse  first-level base-level-line">
+                                <li class="sidebar-item"><a href="/order_report" class="sidebar-link"><span class="hide-menu"> Order Report </span></a></li>
+                                <li class="sidebar-item"><a href="/item_report" class="sidebar-link"><span class="hide-menu"> Item Report </span></a></li>
+                                <li class="sidebar-item"><a href="/customer_food_report" class="sidebar-link"><span class="hide-menu"> Customer Food Report </span></a></li>
+                            </ul>
+                        </li>
+                        <li class="sidebar-item"> <a class="sidebar-link sidebar-link" href="/logout"
+                        aria-expanded="false"><i data-feather="clipboard" class="feather-icon"></i>
+                            <span class="hide-menu">LOGOUT</span></a>
+                        </li>
+                    </ul>
+                </nav>
+                <!-- End Sidebar navigation -->
+            </div>
+            <!-- End Sidebar scroll-->
+        </aside>
+
+        <!-- ============================================================== -->
+        <!-- End Left Sidebar - style you can find in sidebar.scss  -->
+        <!-- ============================================================== -->
+        <!-- ============================================================== -->
+        <!-- Page wrapper  -->
+        <!-- ============================================================== -->
+        <div class="page-wrapper">
+            <!-- ============================================================== -->
+            <!-- Bread crumb and right sidebar toggle -->
+            <!-- ============================================================== -->
+           
+            <!-- ============================================================== -->
+            <!-- End Bread crumb and right sidebar toggle -->
+            <!-- ============================================================== -->
+            <!-- ============================================================== -->
+            <!-- Container fluid  -->
+            <!-- ============================================================== -->
+            <div class="container-fluid">
+                
+                    
+        
+                            <!-- ---------------------------------------------- body --------------------------------- -->
+        <div class="container">
+  <!-- <h2  style="float:right;">NOTIFICATION</h2><br> -->
+  <!-- ===================================================================== Notification ==================================== -->
+  <style>
+
+.notification {
+  position: relative;
+  border-radius: 2px;
+}
+
+.notification .badge {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  padding: 5px 10px;
+  border-radius: 50%;
+  background-color: red;
+  color: white;
+}
+</style>
+  <!-- Modal -->
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <!-- <h4 class="modal-title">Modal Header</h4> -->
+        </div>
+        <div class="modal-body">
+            <div class="scroll-area-md">       
+                    <div class="card" id="notification">
+                      
+                  </div>
+              </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  <!-- ---------------------------------------- Notification ------------------------------------------- -->
+<style type="text/css">
+    .scroll-area-md {
+          height: 500px;
+          overflow-x: hidden;
+      }
+      .model{
+            overflow-y: hidden;
+      }
+      .modal-open .modal
+      {
+        overflow-y: hidden;
+      }
+  </style>
+
+  <script type="text/javascript">
+    $(window).on('load', function() {
+    realTime()
+})
+    function realTime()
+    {
+        // alert('ok')
+        $.ajax({
+                  type: "POST",
+                  url: "/noti/",
+                  data:{  'type_':'msg_status',
+                              'csrfmiddlewaretoken': '{{ csrf_token }}'
+                                }
+                 })
+            .done(function(data){
+                // var profile=data['customer_details']
+                console.log(data['data']['noti_msg'])
+                let tot_notification=(data['data']['noti_msg'])
+
+                if (tot_notification==0)
+                {
+                    tot_notification=""
+                }
+
+                $('#noti_msg').html(tot_notification);
+                
+                setTimeout(realTime, 30000);
+                // $('#user_imgname').html(name);
+            });
+    }
+  </script>
+<script type="text/javascript">
+// <!-- cart one -->
+          $(document).on('click','.noti',function() {
+              
+              $.ajax({
+                      type: "POST",
+                      url: '/noti/',
+                      data:{  'type_':'unread',
+                              'csrfmiddlewaretoken': '{{ csrf_token }}'
+                                }
+                     })
+                  .done(function(data) {
+                      // sleep(100)
+                      // console.log(data['data']['data'])
+                      if (data['data']['message']==true)
+                      {
+                        var order_=data['data']['data']
+                        html=""
+                          for (var i = order_.length - 1; i >= 0; i--) {
+                            console.log(order_[i]['order'][0])
+                            order=order_[i]['order'][0]
+                            var order_details=data['data']['data'][i]['order_item']
+                            var tot_qty=0
+                            tr_html=""
+                              for (var j = order_details.length - 1; j >= 0; j--) 
+                              {
+                                tr_html=tr_html+`<tr>`
+                                if(order['id']==order_details[j]['order_id'])
+                                    {
+                                        item_name=order_details[j]['item_name']
+                                        qty=order_details[j]['quantity']
+                                        tot_qty=tot_qty+qty
+                                        // console.log(item_name)
+                                        // price=order_details[j]['price']
+                                        // tr_html=tr_html+`<td>${item_name}</td><td>${qty}</td><td>${price}</td>`
+                                        tr_html=tr_html+`<td>${item_name}</td><td>${qty}</td>`
+                                      
+                                    }
+                                    tr_html=tr_html+`</tr>`
+                              }
+                              // console.log(tr_html)
+                              order_id=order['id']
+                              payment_mode=order['payment_mode'].toUpperCase()
+                              grand_total=order['grand_total']
+                              order_status=order['order_status'].toUpperCase()
+                              // <a href="/order_details/${order_id}">
+                              up_html_data=`<a href="/today_order">            
+                                <div class="card"><p style="color:#7c8798">ORDER ID: ${order_id} &nbsp; &nbsp; &nbsp; PAYMENT MODE: ${payment_mode} &nbsp; &nbsp; &nbsp; ORDER STATUS:${order_status}</p>
+                                  <table style="color:#7c8798">
+                                      <thead>
+                                          <th>ITEM</th>
+                                          <th>QTY</th>
+                                      </thead>
+                                      <tbody>`
+
+                                  lo_html_data=`<tr>
+                                          <td>TOTAL:</td>
+                                          <td>${grand_total}</td>
+                                      </tr>
+                                      </tbody>
+                                  </table>
+                              </div>
+                            </a>
+                            `
+                          html=html+up_html_data+tr_html+lo_html_data
+                          }
+                          $('#notification').html(html)
+                      }
+                      
+                  });
+          })
+  
+    </script>
+
+</div>
+    {% include 'include/messages.html' %}
+{% block body %}
+{% endblock %}
+
+    <!-- ---------------------------------------------- End body --------------------------------- -->
+                            
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- ============================================================== -->
+            <!-- End Container fluid  -->
+            <!-- ============================================================== -->
+            <!-- ============================================================== -->
+            <!-- footer -->
+            <!-- ============================================================== -->
+            <footer class="footer text-center">
+                All Rights Reserved, Designed and Developed by <a
+                    href="https://www.ai-being.com/">AI-BEING Software Solution</a>.
+            </footer>
+            <!-- ============================================================== -->
+            <!-- End footer -->
+            <!-- ============================================================== -->
+        </div>
+        <!-- ============================================================== -->
+        <!-- End Page wrapper  -->
+        <!-- ============================================================== -->
+    
+    <!-- ============================================================== -->
+    <!-- End Wrapper -->
+    <!-- ============================================================== -->
+    <!-- End Page -->
+    <!-- ============================================================== -->
+    <!-- All Jquery -->
+    <!-- ============================================================== -->
+    <!-- <script src="/static/dashboard_theme/assets/libs/jquery/dist/jquery.min.js"></script> -->
+    <script src="/static/dashboard_theme/assets/libs/popper.js/dist/umd/popper.min.js"></script>
+    <script src="/static/dashboard_theme/assets/libs/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- apps -->
+    <script src="/static/dashboard_theme/dist/js/app-style-switcher.js"></script>
+    <script src="/static/dashboard_theme/dist/js/feather.min.js"></script>
+    <script src="/static/dashboard_theme/assets/libs/perfect-scrollbar/dist/perfect-scrollbar.jquery.min.js"></script>
+    <script src="/static/dashboard_theme/dist/js/sidebarmenu.js"></script>
+    <!--Custom JavaScript -->
+    <script src="/static/dashboard_theme/dist/js/custom.min.js"></script>
+    <!-- End JS -->
+    <script src="highlights/highlight.min.js"></script>
+    <script>
+        hljs.initHighlightingOnLoad();
+    </script>
+</body>
+
+</html>

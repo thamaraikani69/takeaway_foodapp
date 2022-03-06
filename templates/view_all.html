@@ -1,0 +1,142 @@
+{% extends "static_customer.html" %}
+{% block body %}
+{% load mathfilters %}
+
+<style type="text/css">
+    .card-img img {
+          border-radius: 10%;
+        }
+    .card {
+        border-radius: 10%;
+    }
+    .circle_cat {
+          border-radius: 30%;
+        }
+    .circle_banner {
+          border-radius: 5%;
+        }
+</style>
+<!-- ====================== Single image View =================== -->
+
+<style type="text/css">
+                    .modal-backdrop {
+                        z-index: 0;
+                    }
+                    .modal-content{
+                        top: 70px;
+                    }
+                    .modal-backdrop.fade{
+                        opacity: 0;
+                    }
+                </style>
+                        <!-- ? Special Modal 1-->
+                        <!-- {{catitem_data}} -->
+             {% for j in catitem_data %}                
+
+                      <div class="modal fade" id="special_{{j.item_id}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                          
+                        <div class="modal-dialog">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="staticBackdropLabel">Food</h5>
+                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <!-- <div class="input-group mb-2">
+                                    <span class="input-group-text" id="basic-addon1"><i class="fas fa-search"></i></span>
+                                    <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+                                  </div> -->
+                            </div>
+                            <div class="modal-footer pb-2 mb-3">
+                                <div class="card p-3 col-10 mx-auto">
+                                    <div class="card-img text-center">
+                                        <img src="/return-files/item/{{j.itemimage}}" alt="" height="100px" width="90%">
+                                    </div>
+                                    <div class="img-description mt-2">
+                                        <span class="d-block food-descreption">{{j.itemname|upper}}</span>
+                                        {% if j.discount == 0 or j.discount == "" %}
+                                            <span class="d-block ">&#8377;{{j.rate}}</span>
+                                        {% else %}
+                                            {% with discount=j.discount %}
+                                            <span class="d-block "><strike>&#8377;{{ j.rate }}</strike>   &#8377;{{ j.rate|sub:j.discount }}</span>
+                                            {% endwith %}
+                                        {% endif %}
+                                        <span class="text-start food-price text-danger d-inline ps-2">
+                                            {% if j.food_cat == 0 %}
+                                                <img src="/static/client_theme/assets/images/veg.png" alt="" width="16px" class="mt-2 mb-3">
+                                            {% else %}
+                                                <img src="/static/client_theme/assets/images/non-veg.png" alt="" width="16px" class="mt-2 mb-3">
+                                            {% endif %}
+                                        </span>
+                                        <span class="add_cart food-price text-danger float-end"  method="add" cart_item="{{j.item_id}}"><i class="fas fa-plus-circle mt-2"></i></span>
+                                        <span id="dishpriceheader_{{j.item_id}}" class="food-price float-end" style="color:black;">&nbsp;{% for c in cartitem_data %}{% if c.item_id == j.item_id %}{{c.cart_quantity}}{% endif %}{% endfor %}&nbsp;</span>
+                                        <span class="add_cart click_but food-price text-success float-end"  id="sub_{{j.item_id}}"  method="sub"  cart_item="{{j.item_id}}"><i class="fas fa-minus-circle mt-2"></i></span>
+                                    </div>
+                                  <!-- <button class="btn btn-danger">ADD CART</button> -->
+                                </div> 
+                                <style type="text/css">
+                                    .modal .modal-footer {
+                                                border-radius: 0 0 2
+                                            px
+                                             2
+                                            px
+                                            ;
+                                                background-color: #fafafa;
+                                                padding: 4
+                                            px
+                                             6
+                                            px
+                                            ;
+                                                height: 56
+                                            px
+                                            ;
+                                                width: 100%;
+                                                 text-align: left; 
+                                            }
+
+
+                                </style>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+        {% endfor %}
+        
+         <div class="app-main__outer">
+         <!-- ! App inner main here -->
+         <div class="myAppCenter p-3" >
+             <!-- ? ===============> Special Items <=============== -->
+             <div class="specilaWrapper row  gy-3 justify-content-around"> 
+             {% for i in catitem_data %}                
+                <!-- ? ===============> Item <=============== -->
+                <div class="p-2 col-6 col-md-4" >
+                    <div class="p-2 card">
+                        <div class="card-img text-center" >
+                            <img src="/return-files/item/{{i.itemimage}}" alt="" height="100px" width="100%" data-bs-toggle="modal" data-bs-target="#special_{{i.item_id}}">
+                        </div>
+                        <div class="img-description mt-2">
+                            <span class="d-block food-descreption">{{i.itemname}}</span>
+                            {% if i.discount == 0 or i.discount == "" %}
+                                <span class="d-block ">&#8377;{{i.rate}}</span>
+                            {% else %}
+                                {% with discount=i.discount %}
+                                <span class="d-block "><strike>&#8377;{{ i.rate }}</strike>   &#8377;{{ i.rate|sub:i.discount }}</span>
+                                {% endwith %}
+                            {% endif %}
+                            <span class="food-price text-danger d-inline ps-2">
+                                {% if i.food_cat == 0 %}
+                                    <img src="/static/client_theme/assets/images/veg.png" alt="" width="16px" class="mt-2  d-inline">
+                                {% else %}
+                                    <img src="/static/client_theme/assets/images/non-veg.png" alt="" width="16px" class="mt-2 d-inline">
+                                {% endif %}
+                            </span>
+                            <span class="add_cart food-price text-danger float-end"  method="add" cart_item="{{i.item_id}}"><i class="fas fa-plus-circle mt-2"></i></span>
+                            <span class="food-price float-end" style="color:black;"  id="dishprice_{{i.item_id}}">&nbsp;{% for c in cartitem_data %}{% if c.item_id == i.item_id %}{{c.cart_quantity}}{% endif %}{% endfor %}&nbsp;</span>
+                            <span class="add_cart click_but food-price text-success float-end"  id="sub_{{i.item_id}}"  method="sub"  cart_item="{{i.item_id}}"><i class="fas fa-minus-circle mt-2"></i></span>
+                        </div>
+                    </div>
+                  </div>
+                {% endfor %}
+             </div>             
+             
+{% endblock %}
